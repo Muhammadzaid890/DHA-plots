@@ -488,6 +488,47 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
         </div>
       </section>
 
+      {/* Commercial & Residential Quick Navigation Buttons */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <button 
+            onClick={() => setCurrentPage('commercial')}
+            className="group bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 p-6 sm:p-8 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
+          >
+            <div className="space-y-2">
+              <span className="text-xs font-black uppercase tracking-widest text-amber-500">Explore Commercial</span>
+              <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-amber-400 transition-colors">
+                DHA Phase 8 Commercial Areas
+              </h3>
+              <p className="text-xs text-slate-400 font-medium">
+                Business Zone, Beach Avenue, Sahil Com, Zulfiqar Com & Peninsula Com.
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 group-hover:bg-amber-500 group-hover:text-slate-950 text-amber-400 flex items-center justify-center transition-all flex-shrink-0 ml-4">
+              <ArrowRight className="w-6 h-6" />
+            </div>
+          </button>
+
+          <button 
+            onClick={() => setCurrentPage('residential')}
+            className="group bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 p-6 sm:p-8 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
+          >
+            <div className="space-y-2">
+              <span className="text-xs font-black uppercase tracking-widest text-amber-500">Explore Residential</span>
+              <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-amber-400 transition-colors">
+                Residential Yard Categories
+              </h3>
+              <p className="text-xs text-slate-400 font-medium">
+                300 YRD, 500 YRD, 600 YRD, 666 YRD, 1000 YRD & 2000 YRD plots.
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 group-hover:bg-amber-500 group-hover:text-slate-950 text-amber-400 flex items-center justify-center transition-all flex-shrink-0 ml-4">
+              <ArrowRight className="w-6 h-6" />
+            </div>
+          </button>
+        </div>
+      </section>
+
       {/* Featured 5 Commercial Areas Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
         <div className="flex items-center justify-between">
@@ -506,8 +547,8 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
 
         <div className="space-y-3">
           {HOME_COMMERCIAL_AREAS.map((catName) => {
-            const matchingAds = ads.filter(a => a.category === catName);
-            const isExpanded = expandedHomeCat[catName];
+            const matchingAds = filteredAds.filter(a => a.category === catName);
+            const isExpanded = expandedHomeCat[catName] || Boolean(searchQuery);
 
             return (
               <div 
@@ -555,38 +596,6 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
             );
           })}
         </div>
-      </section>
-
-      {/* Main Live Ads List Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Active Available Plot Listings</h2>
-            <p className="text-slate-500 text-xs font-medium">Direct verified ads managed by {OWNER_NAME} {ESTATE_NAME}.</p>
-          </div>
-          <button 
-            onClick={() => setCurrentPage('commercial')}
-            className="text-xs font-bold text-amber-600 hover:underline flex items-center gap-1"
-          >
-            View Category Directory <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {isPageLoading ? (
-          <div className="flex items-center justify-center py-16 text-amber-600 gap-2 font-bold text-sm bg-white rounded-3xl border border-slate-200">
-            <RefreshCw className="w-5 h-5 animate-spin" /> Loading Live Listings...
-          </div>
-        ) : filteredAds.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-3xl border border-slate-200 text-slate-500 text-sm font-medium">
-            No plot listings found matching your search term.
-          </div>
-        ) : (
-          <div className="bg-slate-900 rounded-2xl border border-slate-800 shadow-xl overflow-hidden divide-y divide-slate-800">
-            {filteredAds.map((ad, idx) => (
-              <AdRowItem key={ad.id || idx} ad={ad} index={idx} onClick={() => setSelectedPlot(ad)} />
-            ))}
-          </div>
-        )}
       </section>
     </div>
   );
