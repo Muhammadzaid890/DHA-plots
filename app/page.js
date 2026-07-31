@@ -316,7 +316,6 @@ export default function App() {
         )}
       </header>
 
-      {}
       <main className="flex-grow bg-white">
         {currentPage === 'home' && (
           <HomePage 
@@ -368,7 +367,6 @@ export default function App() {
         )}
       </main>
 
-      {}
       <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 text-xs py-12 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
           
@@ -381,7 +379,7 @@ export default function App() {
               Premier DHA Karachi & Phase 8 Real Estate Advisory. Specializing in high-value commercial zones and luxury residential plots.
             </p>
             <p className="text-xs text-amber-400 font-extrabold tracking-wide">
-              Project by Earth Develope's
+              Project by Earth Develope&apos;s
             </p>
           </div>
 
@@ -406,11 +404,10 @@ export default function App() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-slate-800 text-center text-slate-500 text-[11px] font-semibold">
-          &copy; {new Date().getFullYear()} DHA Plots Real Estate Network. All Rights Reserved. | <span className="text-amber-400 font-bold">Project by Earth Develope's</span>
+          &copy; {new Date().getFullYear()} DHA Plots Real Estate Network. All Rights Reserved. | <span className="text-amber-400 font-bold">Project by Earth Develope&apos;s</span>
         </div>
       </footer>
 
-      {}
       {selectedPlot && (
         <PlotDetailsModal 
           plot={selectedPlot} 
