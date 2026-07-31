@@ -1,14 +1,43 @@
 ﻿import { NextResponse } from 'next/server';
-import { sql } from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
+
+// Helper function to ensure table and column types are up-to-date
+async function ensureTable(sql) {
+  try {
+    await sql`
+      CREATE TABLE IF NOT EXISTS ads (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        type VARCHAR(50) NOT NULL,
+        category VARCHAR(100) NOT NULL,
+        size VARCHAR(50) NOT NULL,
+        price_crore VARCHAR(100) NOT NULL,
+        plot_no VARCHAR(100) NOT NULL,
+        phase VARCHAR(50) DEFAULT 'Phase 8',
+        corner BOOLEAN DEFAULT FALSE,
+        main_boulevard BOOLEAN DEFAULT FALSE,
+        west_open BOOLEAN DEFAULT FALSE,
+        park_facing BOOLEAN DEFAULT FALSE,
+        description TEXT,
+        image TEXT,
+        date_posted DATE DEFAULT CURRENT_DATE,
+        views INT DEFAULT 0
+      )
+    `;
+    // Migration: Change column type to VARCHAR to avoid Numeric Overflow permanently
+    await sql`ALTER TABLE ads ALTER COLUMN price_crore TYPE VARCHAR(100) USING price_crore::text`;
+  } catch (err) {
+    console.warn('Table auto-setup/migration notice:', err.message);
+  }
+}
 
 // GET: Fetch all ads from Neon DB
 export async function GET() {
   try {
-    if (!process.env.DATABASE_URL) {
-      return NextResponse.json({ success: false, error: 'DATABASE_URL is missing' }, { status: 500 });
-    }
+    const sql = getDb();
+    await ensureTable(sql);
 
     const rows = await sql`SELECT * FROM ads ORDER BY id DESC`;
 
@@ -34,13 +63,20 @@ export async function GET() {
     return NextResponse.json({ success: true, ads });
   } catch (error) {
     console.error('Database Fetch Error:', error);
-    return NextResponse.json({ success: false, error: error.message || 'Database fetch failed' }, { status: 500 });
+    return NextResponse.json({ 
+      success: false, 
+      ads: [], 
+      error: error.message || 'Database connection error' 
+    }, { status: 200 });
   }
 }
 
 // POST: Insert a new plot ad into Neon DB
 export async function POST(req) {
   try {
+    const sql = getDb();
+    await ensureTable(sql);
+
     const body = await req.json();
     const {
       title,
@@ -58,12 +94,15 @@ export async function POST(req) {
       image
     } = body;
 
+    // Stringify price to guarantee safe storage without Postgres numeric overflow
+    const safePrice = String(priceCrore || '0').trim();
+
     const insertedRows = await sql`
       INSERT INTO ads (
         title, type, category, size, price_crore, plot_no, phase, 
         corner, main_boulevard, west_open, park_facing, description, image
       ) VALUES (
-        ${title}, ${type}, ${category}, ${size}, ${priceCrore}, ${plotNo}, ${phase || 'Phase 8'}, 
+        ${title}, ${type}, ${category}, ${size}, ${safePrice}, ${plotNo}, ${phase || 'Phase 8'}, 
         ${corner || false}, ${mainBoulevard || false}, ${westOpen || false}, ${parkFacing || false}, 
         ${description || ''}, ${image || ''}
       )
@@ -94,13 +133,14 @@ export async function POST(req) {
     });
   } catch (error) {
     console.error('Database Insert Error:', error);
-    return NextResponse.json({ success: false, error: error.message || 'Database insert failed' }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || 'Database insert failed' }, { status: 200 });
   }
 }
 
 // DELETE: Delete an ad from Neon DB by ID
 export async function DELETE(req) {
   try {
+    const sql = getDb();
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 
@@ -112,6 +152,6 @@ export async function DELETE(req) {
     return NextResponse.json({ success: true, deletedId: id });
   } catch (error) {
     console.error('Database Delete Error:', error);
-    return NextResponse.json({ success: false, error: error.message || 'Database delete failed' }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || 'Database delete failed' }, { status: 200 });
   }
 }
