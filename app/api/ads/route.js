@@ -1,42 +1,61 @@
 ﻿import { NextResponse } from 'next/server';
 import { sql } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
+// GET: Fetch all ads from Neon DB
 export async function GET() {
   try {
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ success: false, error: 'DATABASE_URL is missing' }, { status: 500 });
+    }
+
     const rows = await sql`SELECT * FROM ads ORDER BY id DESC`;
 
-    const ads = rows.map(ad => ({
+    const ads = (rows || []).map(ad => ({
       id: ad.id,
-      title: ad.title,
-      type: ad.type,
-      category: ad.category,
-      size: ad.size,
-      priceCrore: ad.price_crore,
-      plotNo: ad.plot_no,
-      phase: ad.phase,
-      corner: ad.corner,
-      mainBoulevard: ad.main_boulevard,
-      westOpen: ad.west_open,
-      parkFacing: ad.park_facing,
-      description: ad.description,
-      image: ad.image,
-      datePosted: ad.date_posted,
-      views: ad.views
+      title: ad.title || '',
+      type: ad.type || 'Commercial',
+      category: ad.category || '',
+      size: ad.size || '',
+      priceCrore: ad.price_crore || '0',
+      plotNo: ad.plot_no || '',
+      phase: ad.phase || 'Phase 8',
+      corner: Boolean(ad.corner),
+      mainBoulevard: Boolean(ad.main_boulevard),
+      westOpen: Boolean(ad.west_open),
+      parkFacing: Boolean(ad.park_facing),
+      description: ad.description || '',
+      image: ad.image || '',
+      datePosted: ad.date_posted || '',
+      views: ad.views || 0
     }));
 
     return NextResponse.json({ success: true, ads });
   } catch (error) {
     console.error('Database Fetch Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || 'Database fetch failed' }, { status: 500 });
   }
 }
 
+// POST: Insert a new plot ad into Neon DB
 export async function POST(req) {
   try {
     const body = await req.json();
     const {
-      title, type, category, size, priceCrore, plotNo, phase,
-      corner, mainBoulevard, westOpen, parkFacing, description, image
+      title,
+      type,
+      category,
+      size,
+      priceCrore,
+      plotNo,
+      phase,
+      corner,
+      mainBoulevard,
+      westOpen,
+      parkFacing,
+      description,
+      image
     } = body;
 
     const insertedRows = await sql`
@@ -75,10 +94,11 @@ export async function POST(req) {
     });
   } catch (error) {
     console.error('Database Insert Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || 'Database insert failed' }, { status: 500 });
   }
 }
 
+// DELETE: Delete an ad from Neon DB by ID
 export async function DELETE(req) {
   try {
     const { searchParams } = new URL(req.url);
@@ -92,6 +112,6 @@ export async function DELETE(req) {
     return NextResponse.json({ success: true, deletedId: id });
   } catch (error) {
     console.error('Database Delete Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || 'Database delete failed' }, { status: 500 });
   }
 }

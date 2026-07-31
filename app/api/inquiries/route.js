@@ -1,6 +1,8 @@
 ﻿import { NextResponse } from 'next/server';
 import { sql } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req) {
   try {
     const body = await req.json();
@@ -14,6 +16,6 @@ export async function POST(req) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Inquiry Save Error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || 'Failed to save inquiry' }, { status: 500 });
   }
 }
