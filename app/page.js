@@ -62,7 +62,18 @@ export default function App() {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [dbError, setDbError] = useState('');
 
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const savedUser = localStorage.getItem('dha_current_user');
+        return savedUser ? JSON.parse(savedUser) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+
   const [expandedCategories, setExpandedCategories] = useState({});
   const [selectedPlot, setSelectedPlot] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -75,6 +86,16 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (currentUser) {
+        localStorage.setItem('dha_current_user', JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem('dha_current_user');
+      }
+    }
+  }, [currentUser]);
 
   const fetchAds = async () => {
     try {
@@ -120,25 +141,40 @@ export default function App() {
     e.preventDefault();
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-      // Direct client-side verification to avoid missing route 500 errors
-      if (authEmail.toLowerCase().includes('admin') || authEmail.toLowerCase().includes('zeshan')) {
-        const adminUser = { email: authEmail, role: 'admin', name: `${OWNER_NAME} (Admin)` };
-        setCurrentUser(adminUser);
-        showToast(`Welcome back, ${adminUser.name}!`);
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: authMode,
+          email: authEmail,
+          password: authPassword,
+          name: authName,
+          phone: authPhone
+        })
+      });
+      const data = await res.json();
+
+      if (data.success && data.user) {
+        setCurrentUser(data.user);
+        showToast(authMode === 'login' ? `Welcome back, ${data.user.name}!` : `Account saved in DB! Welcome ${data.user.name}`);
+        setIsAuthModalOpen(false);
+        setAuthPassword('');
       } else {
-        const regularUser = { email: authEmail, role: 'user', name: authName || authEmail.split('@')[0] };
-        setCurrentUser(regularUser);
-        showToast(`Welcome ${regularUser.name}!`);
+        showToast(data.error || 'Authentication failed');
       }
-      setIsAuthModalOpen(false);
-      setAuthPassword('');
-    }, 600);
+    } catch (err) {
+      showToast('Network error during authentication');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('dha_current_user');
+    }
     if (currentPage === 'admin') setCurrentPage('home');
     showToast('Logged out successfully.');
   };
