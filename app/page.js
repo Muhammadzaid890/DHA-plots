@@ -25,6 +25,15 @@ const OWNER_NAME = "Zeshan Khurshid";
 const ESTATE_NAME = "SADAF ESTATE";
 const PHONE_NUMBER = "03331234201";
 const WHATSAPP_LINK = "https://wa.me/923331234201";
+const OFFICE_ADDRESS = "1st floor Building #37C, 11 corner, Office #1 Lane 4, Bukhari Commercial Area Phase 6 Defence Housing Authority, Karachi, 75500";
+
+// Social media links - easily replace '#' with your actual profile links
+const SOCIAL_LINKS = {
+  facebook: "#",
+  instagram: "#",
+  tiktok: "#",
+  youtube: "#"
+};
 
 const COMMERCIAL_AREAS = [
   "BUSINESS ZONE COM",
@@ -32,9 +41,7 @@ const COMMERCIAL_AREAS = [
   "SAHIL COMMERCIAL",
   "ZULFIQAR COM",
   "AL MURTAZA COM",
-  "PENINSULA COM",
-  "CREEK COMMERCIAL",
-  "ZONE E COM"
+  "PENINSULA COM"
 ];
 
 const HOME_COMMERCIAL_AREAS = [
@@ -314,7 +321,7 @@ export default function App() {
         )}
       </header>
 
-      {}
+      {/* Main Page Dynamic Routing */}
       <main className="flex-grow bg-white">
         {currentPage === 'home' && (
           <HomePage 
@@ -366,7 +373,6 @@ export default function App() {
         )}
       </main>
 
-      {}
       <footer className="bg-[#0B1A28] border-t border-[#183048] text-slate-400 text-xs py-12 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
           
@@ -381,6 +387,58 @@ export default function App() {
             <p className="text-xs text-[#E5B264] font-extrabold tracking-wide">
               Project by Earth Develope&apos;s
             </p>
+
+            {/* Social Media Links with Inline SVGs */}
+            <div className="pt-2 flex items-center space-x-3">
+              <a 
+                href={SOCIAL_LINKS.facebook} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all"
+                title="Facebook"
+              >
+                {/* Facebook SVG */}
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+              <a 
+                href={SOCIAL_LINKS.instagram} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all"
+                title="Instagram"
+              >
+                {/* Instagram SVG */}
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+              <a 
+                href={SOCIAL_LINKS.tiktok} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all"
+                title="TikTok"
+              >
+                {/* TikTok Icon SVG */}
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.901 2.887 2.89 2.89 0 0 1-2.887-2.887 2.89 2.89 0 0 1 2.887-2.887c.307 0 .602.053.88.146V9.45a6.31 6.31 0 0 0-.88-.063C6.182 9.387 3.5 12.07 3.5 15.378c0 3.308 2.682 5.99 5.99 5.99 3.308 0 5.99-2.682 5.99-5.99V8.6a8.212 8.212 0 0 0 4.109 1.531V6.686z"/>
+                </svg>
+              </a>
+              <a 
+                href={SOCIAL_LINKS.youtube} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all"
+                title="YouTube"
+              >
+                {/* YouTube SVG */}
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -399,7 +457,7 @@ export default function App() {
               <Phone className="w-4 h-4 text-[#E5B264]" /> {PHONE_NUMBER}
             </p>
             <p className="text-slate-300 font-medium">Principal Consultant: <strong>{OWNER_NAME} {ESTATE_NAME}</strong></p>
-            <p className="text-slate-400 font-medium">DHA Phase 8 Commercial Headquarters, Karachi, Pakistan.</p>
+            <p className="text-slate-400 font-medium leading-relaxed">{OFFICE_ADDRESS}</p>
           </div>
         </div>
 
@@ -475,13 +533,11 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
       {/* Hero Banner with Background Skyline Image */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-3xl overflow-hidden border border-[#183048] shadow-2xl min-h-[380px] flex items-center">
-          {/* Background Image */}
           <img 
             src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=80" 
             alt="DHA Phase 8 Commercial Skyline" 
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
-          {/* Gradient Overlay for Readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-[#0B1A28] via-[#0B1A28]/90 to-[#0B1A28]/40"></div>
 
           <div className="max-w-3xl space-y-6 relative z-10 p-8 sm:p-14 text-white">
@@ -508,9 +564,9 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
             className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 sm:p-8 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
           >
             <div className="space-y-2">
-              
+              <span className="text-xs font-black uppercase tracking-widest text-[#E5B264]">Explore Commercial</span>
               <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-[#E5B264] transition-colors">
-                DHA Phase 8 Commercial 
+                DHA Phase 8 Commercial Areas
               </h3>
               <p className="text-xs text-slate-400 font-medium">
                 Business Zone, Beach Avenue, Sahil Com, Zulfiqar Com & Peninsula Com.
@@ -526,9 +582,9 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
             className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 sm:p-8 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
           >
             <div className="space-y-2">
-              
+              <span className="text-xs font-black uppercase tracking-widest text-[#E5B264]">Explore Residential</span>
               <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-[#E5B264] transition-colors">
-                Phase 8 Residential
+                Residential Yard Categories
               </h3>
               <p className="text-xs text-slate-400 font-medium">
                 300 YRD, 500 YRD, 600 YRD, 666 YRD, 1000 YRD & 2000 YRD plots.
@@ -541,73 +597,57 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
         </div>
       </section>
 
-      {/* Featured Commercial Areas Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <span className="text-xs font-black uppercase tracking-widest text-[#E5B264]">Commercial Hubs</span>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">DHA Phase 8 Commercial Areas</h2>
-            <p className="text-slate-500 text-xs font-medium">Click any zone below to instantly view posted ads.</p>
-          </div>
-          <button 
-            onClick={() => setCurrentPage('commercial')}
-            className="text-xs font-bold text-slate-800 hover:text-[#E5B264] hover:underline flex items-center gap-1 transition-colors"
-          >
-            All Commercial Directory <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
+      {/* Accordion Categories Direct Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
+        {HOME_COMMERCIAL_AREAS.map((catName) => {
+          const matchingAds = filteredAds.filter(a => a.category === catName);
+          const isExpanded = expandedHomeCat[catName] || Boolean(searchQuery);
 
-        <div className="space-y-3">
-          {HOME_COMMERCIAL_AREAS.map((catName) => {
-            const matchingAds = filteredAds.filter(a => a.category === catName);
-            const isExpanded = expandedHomeCat[catName] || Boolean(searchQuery);
-
-            return (
-              <div 
-                key={catName}
-                className="bg-[#E8F1F9] border border-slate-300/80 rounded-2xl overflow-hidden transition-all shadow-md hover:bg-[#dbe7f3]"
+          return (
+            <div 
+              key={catName}
+              className="bg-[#E8F1F9] border border-slate-300/80 rounded-2xl overflow-hidden transition-all shadow-md hover:bg-[#dbe7f3]"
+            >
+              <button 
+                onClick={() => toggleHomeCategory(catName)}
+                className="w-full px-5 py-4 sm:py-5 flex items-center justify-between text-left focus:outline-none transition-colors"
               >
-                <button 
-                  onClick={() => toggleHomeCategory(catName)}
-                  className="w-full px-5 py-4 sm:py-5 flex items-center justify-between text-left focus:outline-none transition-colors"
-                >
-                  <div className="flex items-center space-x-4 sm:space-x-6">
-                    <div className="bg-[#0B1A28] text-[#E5B264] font-black text-xs px-3.5 py-2 rounded-xl shadow-sm tracking-wider whitespace-nowrap">
-                      {matchingAds.length} Ads
+                <div className="flex items-center space-x-4 sm:space-x-6">
+                  <div className="bg-[#0B1A28] text-[#E5B264] font-black text-xs px-3.5 py-2 rounded-xl shadow-sm tracking-wider whitespace-nowrap">
+                    {matchingAds.length} Ads
+                  </div>
+                  <span className="font-black text-sm sm:text-base text-slate-900 uppercase tracking-widest">
+                    {catName}
+                  </span>
+                </div>
+
+                <div className="text-slate-700 pl-2">
+                  {isExpanded ? (
+                    <ChevronUp className="w-5 h-5 text-[#b08034] transition-transform" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 transition-transform" />
+                  )}
+                </div>
+              </button>
+
+              {isExpanded && (
+                <div className="p-3 sm:p-5 border-t border-slate-300/80 bg-white/80 space-y-3">
+                  {matchingAds.length === 0 ? (
+                    <div className="text-center py-8 text-slate-600 text-xs font-semibold">
+                      Currently no active ads in <span className="text-[#b08034] font-bold">{catName}</span>.
                     </div>
-                    <span className="font-black text-sm sm:text-base text-slate-900 uppercase tracking-widest">
-                      {catName}
-                    </span>
-                  </div>
-
-                  <div className="text-slate-700 pl-2">
-                    {isExpanded ? (
-                      <ChevronUp className="w-5 h-5 text-[#b08034] transition-transform" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 transition-transform" />
-                    )}
-                  </div>
-                </button>
-
-                {isExpanded && (
-                  <div className="p-3 sm:p-5 border-t border-slate-300/80 bg-white/80 space-y-3">
-                    {matchingAds.length === 0 ? (
-                      <div className="text-center py-8 text-slate-600 text-xs font-semibold">
-                        Currently no active ads in <span className="text-[#b08034] font-bold">{catName}</span>.
-                      </div>
-                    ) : (
-                      <div className="rounded-2xl border border-slate-300 shadow-md overflow-hidden divide-y divide-slate-200 bg-[#E8F1F9]">
-                        {matchingAds.map((ad, idx) => (
-                          <AdRowItem key={ad.id || idx} ad={ad} index={idx} onClick={() => setSelectedPlot(ad)} />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                  ) : (
+                    <div className="rounded-2xl border border-slate-300 shadow-md overflow-hidden divide-y divide-slate-200 bg-[#E8F1F9]">
+                      {matchingAds.map((ad, idx) => (
+                        <AdRowItem key={ad.id || idx} ad={ad} index={idx} onClick={() => setSelectedPlot(ad)} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </section>
     </div>
   );
@@ -849,8 +889,8 @@ function ContactPage({ showToast }) {
               </div>
               <div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase block">Office Address</span>
-                <span className="text-sm font-semibold text-slate-200">
-                  Phase 8 Commercial Zone, DHA, Karachi, Pakistan
+                <span className="text-xs font-semibold text-slate-200 leading-relaxed block">
+                  {OFFICE_ADDRESS}
                 </span>
               </div>
             </div>
@@ -866,7 +906,7 @@ function ContactPage({ showToast }) {
               <input 
                 type="text" 
                 required 
-                placeholder="e.g. Muhammad Ali" 
+                placeholder="Your Name" 
                 value={formData.name}
                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -878,7 +918,7 @@ function ContactPage({ showToast }) {
               <input 
                 type="tel" 
                 required 
-                placeholder="0333 1234567" 
+                placeholder="Phone Number" 
                 value={formData.phone}
                 onChange={e => setFormData({ ...formData, phone: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -890,7 +930,7 @@ function ContactPage({ showToast }) {
               <textarea 
                 rows="4" 
                 required 
-                placeholder="Specify requirements (e.g., Looking for 500 YRD plot in Phase 8)..." 
+                placeholder="Specify your property requirements..." 
                 value={formData.message}
                 onChange={e => setFormData({ ...formData, message: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1060,7 +1100,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
               <input 
                 type="text" 
                 required
-                placeholder="e.g. West open or Phase 4 Leased plot"
+                placeholder="Plot Title"
                 value={adForm.title}
                 onChange={(e) => setAdForm({ ...adForm, title: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1072,7 +1112,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
               <input 
                 type="text" 
                 required
-                placeholder="e.g. 16 street of Muhafiz"
+                placeholder="Street / Location"
                 value={adForm.plotNo}
                 onChange={(e) => setAdForm({ ...adForm, plotNo: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1084,7 +1124,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
               <input 
                 type="text" 
                 required
-                placeholder="e.g. 12.50 or 6.50"
+                placeholder="Price in Crore"
                 value={adForm.priceCrore}
                 onChange={(e) => setAdForm({ ...adForm, priceCrore: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-[#E5B264] outline-none focus:ring-2 focus:ring-[#E5B264] font-bold"
@@ -1318,7 +1358,7 @@ function AuthModal({ mode, setAuthMode, email, setEmail, password, setPassword, 
                 <input 
                   type="text" 
                   required
-                  placeholder="e.g. Ali Ahmed" 
+                  placeholder="Full Name" 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1329,7 +1369,7 @@ function AuthModal({ mode, setAuthMode, email, setEmail, password, setPassword, 
                 <label className="block text-xs font-black text-slate-300 uppercase mb-1">Phone Number</label>
                 <input 
                   type="tel" 
-                  placeholder="0300 1234567" 
+                  placeholder="Phone Number" 
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1343,7 +1383,7 @@ function AuthModal({ mode, setAuthMode, email, setEmail, password, setPassword, 
             <input 
               type="email" 
               required
-              placeholder="e.g. admin@dha.com" 
+              placeholder="Email Address" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
