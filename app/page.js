@@ -5,7 +5,7 @@ import {
   Building2, Phone, Mail, MapPin, Search, Plus, Shield, CheckCircle, 
   ChevronDown, ChevronUp, User, Lock, LogOut, ArrowRight, Eye, Trash2, 
   MessageSquare, Sparkles, SlidersHorizontal, Share2, Check, RefreshCw, X, Menu,
-  AlertTriangle
+  AlertTriangle, Video, BookmarkCheck
 } from 'lucide-react';
 
 const BrandLogo = ({ className = "h-10 w-10" }) => (
@@ -25,11 +25,10 @@ const OWNER_NAME = "Zeshan Khurshid";
 const ESTATE_NAME = "SADAF ESTATE";
 const PHONE_NUMBER = "03331234201";
 const WHATSAPP_LINK = "https://wa.me/923331234201";
-const OFFICE_ADDRESS = "1st floor Building #37C, 11 corner, Office #1 Lane 4, Bukhari Commercial Area Phase 6 Defence Housing Authority, Karachi, 75500";
+const OFFICE_ADDRESS = "1st floor Building #37C, Lane 4 / Lane 11 corner, Bukhari Commercial Area Phase 6 DHA, Defence Housing Authority, Karachi, 75500";
 
-// Social media links - easily replace '#' with your actual profile links
 const SOCIAL_LINKS = {
-  facebook: "#",
+  facebook: "https://www.facebook.com/share/1GP9xkMgXW/",
   instagram: "#",
   tiktok: "#",
   youtube: "#"
@@ -41,7 +40,8 @@ const COMMERCIAL_AREAS = [
   "SAHIL COMMERCIAL",
   "ZULFIQAR COM",
   "AL MURTAZA COM",
-  "PENINSULA COM"
+  "PENINSULA COM",
+  "BUKHARI COMMERCIAL"
 ];
 
 const HOME_COMMERCIAL_AREAS = [
@@ -49,16 +49,30 @@ const HOME_COMMERCIAL_AREAS = [
   "ZULFIQAR COM",
   "AL MURTAZA COM",
   "SAHIL COMMERCIAL",
-  "PENINSULA COM"
+  "PENINSULA COM",
+  "BUKHARI COMMERCIAL"
 ];
 
+// CLIENT UPDATED RESIDENTIAL SIZES LIST (100 to 4000 Yards)
 const RESIDENTIAL_SIZES = [
+  "100 YRD",
+  "120 YRD",
+  "150 YRD",
   "300 YRD",
   "500 YRD",
   "600 YRD",
   "666 YRD",
+  "800 YRD",
   "1000 YRD",
-  "2000 YRD"
+  "2000 YRD",
+  "4000 YRD"
+];
+
+const BOOKING_CATEGORIES = [
+  "DHA PHASE 8 BOOKINGS",
+  "COMMERCIAL INSTALLMENT PLOTS",
+  "RESIDENTIAL INSTALLMENT PLOTS",
+  "UPCOMING NEW LAUNCHES"
 ];
 
 export default function App() {
@@ -83,11 +97,8 @@ export default function App() {
   const [selectedPlot, setSelectedPlot] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState('login');
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
-  const [authName, setAuthName] = useState('');
-  const [authPhone, setAuthPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -113,12 +124,9 @@ export default function App() {
         setDbError('');
       } else {
         setAds([]);
-        if (data.error) {
-          setDbError(data.error);
-        }
+        if (data.error) setDbError(data.error);
       }
     } catch (err) {
-      console.error('Failed to load ads:', err);
       setAds([]);
       setDbError('Database Connection Error');
     } finally {
@@ -151,25 +159,23 @@ export default function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          action: authMode,
+          action: 'login',
           email: authEmail,
-          password: authPassword,
-          name: authName,
-          phone: authPhone
+          password: authPassword
         })
       });
       const data = await res.json();
 
       if (data.success && data.user) {
         setCurrentUser(data.user);
-        showToast(authMode === 'login' ? `Welcome back, ${data.user.name}!` : `Account saved in DB! Welcome ${data.user.name}`);
+        showToast(`Welcome back Administrator, ${data.user.name}!`);
         setIsAuthModalOpen(false);
         setAuthPassword('');
       } else {
-        showToast(data.error || 'Authentication failed');
+        showToast(data.error || 'Admin credentials invalid');
       }
     } catch (err) {
-      showToast('Network error during authentication');
+      showToast('Network error during login');
     } finally {
       setIsLoading(false);
     }
@@ -187,7 +193,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col selection:bg-[#E5B264] selection:text-slate-950 relative">
       
-      {/* Toast Popup */}
       {toastMessage && (
         <div className="fixed top-24 right-5 z-50 bg-[#E5B264] text-slate-950 px-6 py-3.5 rounded-2xl shadow-2xl font-black flex items-center gap-2.5 border border-[#d6a354] animate-bounce">
           <Sparkles className="w-5 h-5 text-slate-950" />
@@ -195,7 +200,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Database Error Warning Banner */}
       {dbError && (
         <div className="bg-[#E5B264]/10 border-b border-[#E5B264]/30 text-amber-900 text-xs px-4 py-3 flex items-center justify-between">
           <div className="max-w-7xl mx-auto flex items-center gap-2 font-bold">
@@ -254,6 +258,12 @@ export default function App() {
                 Residential
               </button>
               <button 
+                onClick={() => setCurrentPage('booking')}
+                className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all ${currentPage === 'booking' ? 'bg-[#E5B264] text-slate-950 shadow-lg shadow-[#E5B264]/20' : 'text-slate-300 hover:text-white hover:bg-[#13283b]'}`}
+              >
+                Booking
+              </button>
+              <button 
                 onClick={() => setCurrentPage('contact')}
                 className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all ${currentPage === 'contact' ? 'bg-[#E5B264] text-slate-950 shadow-lg shadow-[#E5B264]/20' : 'text-slate-300 hover:text-white hover:bg-[#13283b]'}`}
               >
@@ -273,7 +283,7 @@ export default function App() {
               {currentUser ? (
                 <div className="flex items-center gap-3 bg-[#060e16] px-4 py-2 rounded-2xl border border-[#183048]">
                   <div className="text-right">
-                    <span className="block text-xs font-bold text-white">{currentUser.name || 'User'}</span>
+                    <span className="block text-xs font-bold text-white">{currentUser.name || 'Admin'}</span>
                     <span className="block text-[10px] text-[#E5B264] font-extrabold uppercase tracking-wider">{currentUser.role}</span>
                   </div>
                   <button 
@@ -289,7 +299,7 @@ export default function App() {
                   onClick={() => setIsAuthModalOpen(true)}
                   className="bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black px-5 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-[#E5B264]/20 active:scale-95 flex items-center gap-2"
                 >
-                  <User className="w-4 h-4" /> Login / Sign Up
+                  <Lock className="w-4 h-4" /> Admin Login 
                 </button>
               )}
             </div>
@@ -308,12 +318,13 @@ export default function App() {
             <button onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Home</button>
             <button onClick={() => { setCurrentPage('commercial'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Commercial</button>
             <button onClick={() => { setCurrentPage('residential'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Residential</button>
+            <button onClick={() => { setCurrentPage('booking'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Booking</button>
             <button onClick={() => { setCurrentPage('contact'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Contact</button>
             {currentUser?.role === 'admin' && (
               <button onClick={() => { setCurrentPage('admin'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-[#E5B264] hover:bg-[#13283b]">Admin Panel</button>
             )}
             {!currentUser ? (
-              <button onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }} className="w-full bg-[#E5B264] text-slate-950 font-extrabold py-2.5 rounded-xl text-center text-sm mt-2">Login / Sign Up</button>
+              <button onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }} className="w-full bg-[#E5B264] text-slate-950 font-extrabold py-2.5 rounded-xl text-center text-sm mt-2">Admin Login</button>
             ) : (
               <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="w-full bg-rose-500/20 text-rose-300 font-bold py-2.5 rounded-xl text-center text-sm mt-2">Logout</button>
             )}
@@ -321,7 +332,7 @@ export default function App() {
         )}
       </header>
 
-      {/* Main Page Dynamic Routing */}
+      {/* Dynamic Main Routing */}
       <main className="flex-grow bg-white">
         {currentPage === 'home' && (
           <HomePage 
@@ -360,6 +371,19 @@ export default function App() {
           />
         )}
 
+        {currentPage === 'booking' && (
+          <CategoryListingPage 
+            title="DHA PHASE 8 BOOKING & INSTALLMENTS"
+            subtitle="Explore direct inventory booking opportunities and upcoming verified projects."
+            categories={BOOKING_CATEGORIES}
+            ads={ads}
+            expandedCategories={expandedCategories}
+            toggleCategory={toggleCategory}
+            setSelectedPlot={setSelectedPlot}
+            type="Booking"
+          />
+        )}
+
         {currentPage === 'contact' && (
           <ContactPage showToast={showToast} />
         )}
@@ -375,68 +399,27 @@ export default function App() {
 
       <footer className="bg-[#0B1A28] border-t border-[#183048] text-slate-400 text-xs py-12 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
-          
           <div className="space-y-3.5">
             <div className="flex items-center gap-2.5">
               <BrandLogo className="h-9 w-9" />
               <span className="text-xl font-black text-white tracking-tight">DHA <span className="text-[#E5B264]">PLOTS</span></span>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed">
-              Premier DHA Karachi & Phase 8 Real Estate Advisory. Specializing in high-value commercial zones and luxury residential plots.
+              Premier DHA Karachi & Phase 8 Real Estate Advisory. Specializing in high-value commercial zones, luxury residential plots, and installment bookings.
             </p>
             <p className="text-xs text-[#E5B264] font-extrabold tracking-wide">
               Project by Earth Develope&apos;s
             </p>
 
-            {/* Social Media Links with Inline SVGs */}
             <div className="pt-2 flex items-center space-x-3">
-              <a 
-                href={SOCIAL_LINKS.facebook} 
-                target="_blank" 
-                rel="noreferrer" 
-                className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all"
-                title="Facebook"
-              >
-                {/* Facebook SVG */}
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
+              <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
               </a>
-              <a 
-                href={SOCIAL_LINKS.instagram} 
-                target="_blank" 
-                rel="noreferrer" 
-                className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all"
-                title="Instagram"
-              >
-                {/* Instagram SVG */}
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
+              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
               </a>
-              <a 
-                href={SOCIAL_LINKS.tiktok} 
-                target="_blank" 
-                rel="noreferrer" 
-                className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all"
-                title="TikTok"
-              >
-                {/* TikTok Icon SVG */}
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.901 2.887 2.89 2.89 0 0 1-2.887-2.887 2.89 2.89 0 0 1 2.887-2.887c.307 0 .602.053.88.146V9.45a6.31 6.31 0 0 0-.88-.063C6.182 9.387 3.5 12.07 3.5 15.378c0 3.308 2.682 5.99 5.99 5.99 3.308 0 5.99-2.682 5.99-5.99V8.6a8.212 8.212 0 0 0 4.109 1.531V6.686z"/>
-                </svg>
-              </a>
-              <a 
-                href={SOCIAL_LINKS.youtube} 
-                target="_blank" 
-                rel="noreferrer" 
-                className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all"
-                title="YouTube"
-              >
-                {/* YouTube SVG */}
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
+              <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.901 2.887 2.89 2.89 0 0 1-2.887-2.887 2.89 2.89 0 0 1 2.887-2.887c.307 0 .602.053.88.146V9.45a6.31 6.31 0 0 0-.88-.063C6.182 9.387 3.5 12.07 3.5 15.378c0 3.308 2.682 5.99 5.99 5.99 3.308 0 5.99-2.682 5.99-5.99V8.6a8.212 8.212 0 0 0 4.109 1.531V6.686z"/></svg>
               </a>
             </div>
           </div>
@@ -447,6 +430,7 @@ export default function App() {
               <button onClick={() => setCurrentPage('home')} className="text-left hover:text-[#E5B264] transition-colors">Home Page</button>
               <button onClick={() => setCurrentPage('commercial')} className="text-left hover:text-[#E5B264] transition-colors">Phase 8 Commercial</button>
               <button onClick={() => setCurrentPage('residential')} className="text-left hover:text-[#E5B264] transition-colors">Residential Yard Sizes</button>
+              <button onClick={() => setCurrentPage('booking')} className="text-left hover:text-[#E5B264] transition-colors">Bookings & Installments</button>
               <button onClick={() => setCurrentPage('contact')} className="text-left hover:text-[#E5B264] transition-colors">Direct Contact & Address</button>
             </div>
           </div>
@@ -466,7 +450,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Floating Circular WhatsApp Chat Button */}
+      {/* Floating WhatsApp Chat */}
       <a 
         href={WHATSAPP_LINK}
         target="_blank"
@@ -487,18 +471,13 @@ export default function App() {
         />
       )}
 
+      {/* Admin Login Modal (No Signup) */}
       {isAuthModalOpen && (
-        <AuthModal 
-          mode={authMode} 
-          setAuthMode={setAuthMode} 
+        <AdminLoginModal 
           email={authEmail} 
           setEmail={setAuthEmail} 
           password={authPassword} 
           setPassword={setAuthPassword} 
-          name={authName}
-          setName={setAuthName}
-          phone={authPhone}
-          setPhone={setAuthPhone}
           onSubmit={handleAuthSubmit} 
           isLoading={isLoading} 
           onClose={() => setIsAuthModalOpen(false)} 
@@ -522,15 +501,14 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
   const filteredAds = useMemo(() => {
     if (!searchQuery) return ads;
     return ads.filter(a => 
-      a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      a.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      a.plotNo.toLowerCase().includes(searchQuery.toLowerCase())
+      a.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      a.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      a.plotNo?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [ads, searchQuery]);
 
   return (
     <div className="space-y-12 py-8 bg-white">
-      {/* Hero Banner with Background Skyline Image */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-3xl overflow-hidden border border-[#183048] shadow-2xl min-h-[380px] flex items-center">
           <img 
@@ -546,52 +524,64 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
             </span>
             
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-white drop-shadow-md">
-              Exclusive <span className="text-[#E5B264]">Commercial & Residential</span> Plots
+              Exclusive <span className="text-[#E5B264]">Commercial, Residential & Booking</span> Plots
             </h1>
             
             <p className="text-slate-200 text-base sm:text-lg font-medium leading-relaxed drop-shadow">
-              Managed by <strong className="text-white">{OWNER_NAME} {ESTATE_NAME}</strong>. Direct market inventory for Business Zone, Zulfiqar Com, Al Murtaza Com, Sahil Com, Peninsula Com, and Residential Yards (300 YRD to 2000 YRD).
+              Managed by <strong className="text-white">{OWNER_NAME} {ESTATE_NAME}</strong>. Direct inventory Commercial Plots Business Zone, Bukhari Commercial, Zulfiqar Com, Sahil Com, and Residential Yards (100 YRD to 4000 YRD).
             </p>
           </div>
         </div>
       </section>
 
-      {/* Commercial & Residential Quick Navigation Buttons */}
+      {/* 3 Quick Action Cards */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <button 
             onClick={() => setCurrentPage('commercial')}
-            className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 sm:p-8 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
+            className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
           >
-            <div className="space-y-2">
-              <span className="text-xs font-black uppercase tracking-widest text-[#E5B264]">Explore Commercial</span>
-              <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-[#E5B264] transition-colors">
-                DHA Phase 8 Commercial Areas
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-black uppercase tracking-widest text-[#E5B264]">Commercial Hub</span>
+              <h3 className="text-lg font-black text-white group-hover:text-[#E5B264] transition-colors">
+                Commercial Areas
               </h3>
-              <p className="text-xs text-slate-400 font-medium">
-                Business Zone, Beach Avenue, Sahil Com, Zulfiqar Com & Peninsula Com.
-              </p>
+              <p className="text-xs text-slate-400 font-medium">Bukhari, Business Zone, Sahil & Peninsula</p>
             </div>
-            <div className="w-12 h-12 rounded-2xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-4">
-              <ArrowRight className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
+              <ArrowRight className="w-5 h-5" />
             </div>
           </button>
 
           <button 
             onClick={() => setCurrentPage('residential')}
-            className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 sm:p-8 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
+            className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
           >
-            <div className="space-y-2">
-              <span className="text-xs font-black uppercase tracking-widest text-[#E5B264]">Explore Residential</span>
-              <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-[#E5B264] transition-colors">
-                Residential Yard Categories
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-black uppercase tracking-widest text-[#E5B264]">Residential Hub</span>
+              <h3 className="text-lg font-black text-white group-hover:text-[#E5B264] transition-colors">
+                Yard Sizes (100 to 4000)
               </h3>
-              <p className="text-xs text-slate-400 font-medium">
-                300 YRD, 500 YRD, 600 YRD, 666 YRD, 1000 YRD & 2000 YRD plots.
-              </p>
+              <p className="text-xs text-slate-400 font-medium">100, 120, 150, 300, 500, 800, 1000, 4000 YRD</p>
             </div>
-            <div className="w-12 h-12 rounded-2xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-4">
-              <ArrowRight className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
+              <ArrowRight className="w-5 h-5" />
+            </div>
+          </button>
+
+          <button 
+            onClick={() => setCurrentPage('booking')}
+            className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
+          >
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-black uppercase tracking-widest text-[#E5B264]">Installment Plans</span>
+              <h3 className="text-lg font-black text-white group-hover:text-[#E5B264] transition-colors">
+                Bookings & Projects
+              </h3>
+              <p className="text-xs text-slate-400 font-medium">New Launches & Easy Installments</p>
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
+              <BookmarkCheck className="w-5 h-5" />
             </div>
           </button>
         </div>
@@ -605,7 +595,7 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
 
           return (
             <div 
-              key={catName}
+              key={catName} 
               className="bg-[#E8F1F9] border border-slate-300/80 rounded-2xl overflow-hidden transition-all shadow-md hover:bg-[#dbe7f3]"
             >
               <button 
@@ -671,7 +661,7 @@ function CategoryListingPage({ title, subtitle, categories, ads, expandedCategor
 
           return (
             <div 
-              key={catName}
+              key={catName} 
               className="bg-[#E8F1F9] border border-slate-300/80 rounded-2xl overflow-hidden transition-all shadow-md hover:bg-[#dbe7f3]"
             >
               <button 
@@ -742,8 +732,13 @@ function AdRowItem({ ad, index, onClick }) {
           #{ad.id || (index + 1)}
         </span>
         <div>
-          <h4 className="font-black text-base text-slate-900 leading-snug hover:text-[#b08034] transition-colors">
+          <h4 className="font-black text-base text-slate-900 leading-snug hover:text-[#b08034] transition-colors flex items-center gap-2">
             {ad.title}
+            {ad.youtubeUrl && (
+              <span className="inline-flex items-center gap-1 text-[10px] bg-red-600 text-white font-extrabold px-2 py-0.5 rounded-full shadow-sm">
+                <Video className="w-3 h-3" /> Video
+              </span>
+            )}
           </h4>
           <p className="text-xs text-slate-600 font-bold mt-0.5">
             {ad.plotNo || "DHA Karachi"}
@@ -825,13 +820,8 @@ function ContactPage({ showToast }) {
         body: JSON.stringify(formData)
       });
       const data = await res.json();
-      if (data.success) {
-        showToast('Thank you! Your message has been saved.');
-        setFormData({ name: '', phone: '', message: '' });
-      } else {
-        showToast('Message submitted successfully!');
-        setFormData({ name: '', phone: '', message: '' });
-      }
+      showToast('Thank you! Your message has been saved.');
+      setFormData({ name: '', phone: '', message: '' });
     } catch (err) {
       showToast('Message submitted.');
       setFormData({ name: '', phone: '', message: '' });
@@ -965,16 +955,21 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
     westOpen: false,
     parkFacing: false,
     description: '',
-    image: ''
+    image: '',
+    youtubeUrl: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleTypeChange = (newType) => {
+    let defaultCat = COMMERCIAL_AREAS[0];
+    if (newType === 'Residential') defaultCat = RESIDENTIAL_SIZES[0];
+    if (newType === 'Booking') defaultCat = BOOKING_CATEGORIES[0];
+
     setAdForm(prev => ({
       ...prev,
       type: newType,
-      category: newType === 'Commercial' ? COMMERCIAL_AREAS[0] : RESIDENTIAL_SIZES[0]
+      category: defaultCat
     }));
   };
 
@@ -1007,7 +1002,8 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
           westOpen: false,
           parkFacing: false,
           description: '',
-          image: ''
+          image: '',
+          youtubeUrl: ''
         });
       } else {
         showToast(`Error: ${data.error || 'Failed to save ad'}`);
@@ -1049,7 +1045,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
 
       <div className="bg-[#0B1A28] border border-[#183048] rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl text-white">
         <h3 className="text-xl font-black text-white flex items-center gap-2">
-          <Plus className="w-5 h-5 text-[#E5B264]" /> Create New Plot Advertisement
+          <Plus className="w-5 h-5 text-[#E5B264]" /> Create New Plot / Booking Advertisement
         </h3>
 
         <form onSubmit={handlePostAd} className="space-y-6">
@@ -1063,21 +1059,20 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
               >
                 <option value="Commercial">Commercial</option>
                 <option value="Residential">Residential</option>
+                <option value="Booking">Booking & Installments</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-300 uppercase mb-2">2. Target Category / Page</label>
+              <label className="block text-xs font-black text-slate-300 uppercase mb-2">2. Target Category / Area</label>
               <select 
                 value={adForm.category}
                 onChange={(e) => setAdForm({ ...adForm, category: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-[#E5B264] outline-none focus:ring-2 focus:ring-[#E5B264] font-black"
               >
-                {adForm.type === 'Commercial' ? (
-                  COMMERCIAL_AREAS.map(area => <option key={area} value={area}>{area}</option>)
-                ) : (
-                  RESIDENTIAL_SIZES.map(sz => <option key={sz} value={sz}>{sz}</option>)
-                )}
+                {adForm.type === 'Commercial' && COMMERCIAL_AREAS.map(area => <option key={area} value={area}>{area}</option>)}
+                {adForm.type === 'Residential' && RESIDENTIAL_SIZES.map(sz => <option key={sz} value={sz}>{sz}</option>)}
+                {adForm.type === 'Booking' && BOOKING_CATEGORIES.map(b => <option key={b} value={b}>{b}</option>)}
               </select>
             </div>
 
@@ -1086,7 +1081,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
               <input 
                 type="text" 
                 required
-                placeholder="e.g. 500 sq.yd or 300 YRD"
+                placeholder="e.g. 120 YRD or 500 sq.yd"
                 value={adForm.size}
                 onChange={(e) => setAdForm({ ...adForm, size: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-semibold"
@@ -1096,11 +1091,11 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-black text-slate-300 uppercase mb-2">Plot Title (e.g. West open)</label>
+              <label className="block text-xs font-black text-slate-300 uppercase mb-2">Plot / Booking Title</label>
               <input 
                 type="text" 
                 required
-                placeholder="Plot Title"
+                placeholder="e.g. West open Corner Plot"
                 value={adForm.title}
                 onChange={(e) => setAdForm({ ...adForm, title: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1112,7 +1107,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
               <input 
                 type="text" 
                 required
-                placeholder="Street / Location"
+                placeholder="Street / Location / Lane"
                 value={adForm.plotNo}
                 onChange={(e) => setAdForm({ ...adForm, plotNo: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1124,12 +1119,26 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
               <input 
                 type="text" 
                 required
-                placeholder="Price in Crore"
+                placeholder="Price in Crore (e.g. 3.5)"
                 value={adForm.priceCrore}
                 onChange={(e) => setAdForm({ ...adForm, priceCrore: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-[#E5B264] outline-none focus:ring-2 focus:ring-[#E5B264] font-bold"
               />
             </div>
+          </div>
+
+          {/* YouTube Video Link Input */}
+          <div>
+            <label className="block text-xs font-black text-slate-300 uppercase mb-2 flex items-center gap-1.5">
+              <Video className="w-4 h-4 text-red-500" /> YouTube Video Link (Optional)
+            </label>
+            <input 
+              type="url" 
+              placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
+              value={adForm.youtubeUrl}
+              onChange={(e) => setAdForm({ ...adForm, youtubeUrl: e.target.value })}
+              className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
+            />
           </div>
 
           <div>
@@ -1181,7 +1190,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
             <label className="block text-xs font-black text-slate-300 uppercase mb-2">Description</label>
             <textarea 
               rows="3" 
-              placeholder="Specs, location features..." 
+              placeholder="Specs, location features, payment details..." 
               value={adForm.description}
               onChange={(e) => setAdForm({ ...adForm, description: e.target.value })}
               className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1191,7 +1200,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
           <button 
             type="submit" 
             disabled={isSubmitting}
-            className="w-full bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black py-4 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 text-base"
+            className="w-full bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black py-4 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 text-base cursor-pointer"
           >
             {isSubmitting ? <RefreshCw className="w-5 h-5 animate-spin" /> : 'Publish Listing'}
           </button>
@@ -1208,6 +1217,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
                 <th className="py-3.5 px-4">Ad Title</th>
                 <th className="py-3.5 px-4">Type</th>
                 <th className="py-3.5 px-4">Category</th>
+                <th className="py-3.5 px-4">Video</th>
                 <th className="py-3.5 px-4">Street</th>
                 <th className="py-3.5 px-4">Price</th>
                 <th className="py-3.5 px-4 text-right">Action</th>
@@ -1219,6 +1229,15 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
                   <td className="py-3.5 px-4 font-bold text-white">{ad.title}</td>
                   <td className="py-3.5 px-4">{ad.type}</td>
                   <td className="py-3.5 px-4 text-[#E5B264] font-black">{ad.category}</td>
+                  <td className="py-3.5 px-4">
+                    {ad.youtubeUrl ? (
+                      <a href={ad.youtubeUrl} target="_blank" rel="noreferrer" className="text-red-400 hover:text-red-300 font-bold flex items-center gap-1">
+                        <Video className="w-3.5 h-3.5" /> Watch
+                      </a>
+                    ) : (
+                      <span className="text-slate-600">—</span>
+                    )}
+                  </td>
                   <td className="py-3.5 px-4">{ad.plotNo}</td>
                   <td className="py-3.5 px-4 font-black text-[#E5B264]">PKR {ad.priceCrore} Cr</td>
                   <td className="py-3.5 px-4 text-right">
@@ -1271,6 +1290,18 @@ function PlotDetailsModal({ plot, onClose }) {
             <span className="text-xl font-black text-[#E5B264]">{formatPkr(plot.priceCrore)}</span>
           </div>
 
+          {/* YouTube Video Button in Modal */}
+          {plot.youtubeUrl && (
+            <a 
+              href={plot.youtubeUrl} 
+              target="_blank" 
+              rel="noreferrer" 
+              className="bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-white font-black p-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm transition-all"
+            >
+              <Video className="w-5 h-5 text-red-400" /> Watch YouTube Video Tour
+            </a>
+          )}
+
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-y border-[#183048] text-xs">
             <div className="bg-[#060e16] p-3 rounded-xl border border-[#183048] text-center">
               <span className="block text-slate-500 text-[10px] uppercase font-bold">Corner</span>
@@ -1297,15 +1328,15 @@ function PlotDetailsModal({ plot, onClose }) {
 
           <div className="pt-4 flex flex-col sm:flex-row gap-3">
             <a 
-              href={WHATSAPP_LINK}
-              target="_blank"
-              rel="noreferrer"
+              href={WHATSAPP_LINK} 
+              target="_blank" 
+              rel="noreferrer" 
               className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-md"
             >
               <MessageSquare className="w-4 h-4" /> WhatsApp Direct
             </a>
             <a 
-              href={`tel:${PHONE_NUMBER}`}
+              href={`tel:${PHONE_NUMBER}`} 
               className="flex-1 bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-md"
             >
               <Phone className="w-4 h-4" /> Call {OWNER_NAME}
@@ -1317,7 +1348,7 @@ function PlotDetailsModal({ plot, onClose }) {
   );
 }
 
-function AuthModal({ mode, setAuthMode, email, setEmail, password, setPassword, name, setName, phone, setPhone, onSubmit, isLoading, onClose }) {
+function AdminLoginModal({ email, setEmail, password, setPassword, onSubmit, isLoading, onClose }) {
   return (
     <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
       <div className="bg-[#0B1A28] border border-[#183048] text-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
@@ -1328,64 +1359,20 @@ function AuthModal({ mode, setAuthMode, email, setEmail, password, setPassword, 
         <div className="text-center space-y-2">
           <BrandLogo className="h-12 w-12 mx-auto" />
           <h3 className="text-2xl font-black text-white">
-            {mode === 'login' ? 'Portal Login' : 'Create Account'}
-          </h3>
-          <p className="text-xs text-slate-400 font-semibold">Access DHA Plots portal features and admin panel.</p>
-        </div>
-
-        <div className="flex rounded-xl bg-[#060e16] p-1 text-xs font-black border border-[#183048]">
-          <button 
-            type="button" 
-            onClick={() => setAuthMode('login')} 
-            className={`flex-1 py-2 rounded-lg transition-all ${mode === 'login' ? 'bg-[#E5B264] text-slate-950 shadow-sm' : 'text-slate-400'}`}
-          >
             Login
-          </button>
-          <button 
-            type="button" 
-            onClick={() => setAuthMode('signup')} 
-            className={`flex-1 py-2 rounded-lg transition-all ${mode === 'signup' ? 'bg-[#E5B264] text-slate-950 shadow-sm' : 'text-slate-400'}`}
-          >
-            Sign Up
-          </button>
+          </h3>
+          <p className="text-xs text-slate-400 font-semibold">Sign in with administrator credentials.</p>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
-          {mode === 'signup' && (
-            <>
-              <div>
-                <label className="block text-xs font-black text-slate-300 uppercase mb-1">Full Name</label>
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Full Name" 
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-black text-slate-300 uppercase mb-1">Phone Number</label>
-                <input 
-                  type="tel" 
-                  placeholder="Phone Number" 
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
-                />
-              </div>
-            </>
-          )}
-
           <div>
             <label className="block text-xs font-black text-slate-300 uppercase mb-1">Email Address</label>
             <input 
               type="email" 
-              required
-              placeholder="Email Address" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              required 
+              placeholder="user@gmail.com" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
               className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
             />
           </div>
@@ -1394,10 +1381,10 @@ function AuthModal({ mode, setAuthMode, email, setEmail, password, setPassword, 
             <label className="block text-xs font-black text-slate-300 uppercase mb-1">Password</label>
             <input 
               type="password" 
-              required
+              required 
               placeholder="••••••••" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
               className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
             />
           </div>
@@ -1405,9 +1392,9 @@ function AuthModal({ mode, setAuthMode, email, setEmail, password, setPassword, 
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black py-3.5 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 text-sm"
+            className="w-full bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black py-3.5 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 text-sm cursor-pointer"
           >
-            {isLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : mode === 'login' ? 'Login Now' : 'Create Account'}
+            {isLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : 'Login to Admin Panel'}
           </button>
         </form>
       </div>
