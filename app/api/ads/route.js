@@ -22,12 +22,15 @@ async function ensureTable(sql) {
         park_facing BOOLEAN DEFAULT FALSE,
         description TEXT,
         image TEXT,
+        youtube_url TEXT,
         date_posted DATE DEFAULT CURRENT_DATE,
         views INT DEFAULT 0
       )
     `;
-    // Migration: Change column type to VARCHAR to avoid Numeric Overflow permanently
+
+    // Migrations: Ensure VARCHAR price and youtube_url exist without crash
     await sql`ALTER TABLE ads ALTER COLUMN price_crore TYPE VARCHAR(100) USING price_crore::text`;
+    await sql`ALTER TABLE ads ADD COLUMN IF NOT EXISTS youtube_url TEXT`;
   } catch (err) {
     console.warn('Table auto-setup/migration notice:', err.message);
   }
@@ -56,6 +59,7 @@ export async function GET() {
       parkFacing: Boolean(ad.park_facing),
       description: ad.description || '',
       image: ad.image || '',
+      youtubeUrl: ad.youtube_url || '',
       datePosted: ad.date_posted || '',
       views: ad.views || 0
     }));
@@ -91,7 +95,8 @@ export async function POST(req) {
       westOpen,
       parkFacing,
       description,
-      image
+      image,
+      youtubeUrl
     } = body;
 
     // Stringify price to guarantee safe storage without Postgres numeric overflow
@@ -100,11 +105,11 @@ export async function POST(req) {
     const insertedRows = await sql`
       INSERT INTO ads (
         title, type, category, size, price_crore, plot_no, phase, 
-        corner, main_boulevard, west_open, park_facing, description, image
+        corner, main_boulevard, west_open, park_facing, description, image, youtube_url
       ) VALUES (
         ${title}, ${type}, ${category}, ${size}, ${safePrice}, ${plotNo}, ${phase || 'Phase 8'}, 
         ${corner || false}, ${mainBoulevard || false}, ${westOpen || false}, ${parkFacing || false}, 
-        ${description || ''}, ${image || ''}
+        ${description || ''}, ${image || ''}, ${youtubeUrl || ''}
       )
       RETURNING *
     `;
@@ -127,6 +132,7 @@ export async function POST(req) {
         parkFacing: newAd.park_facing,
         description: newAd.description,
         image: newAd.image,
+        youtubeUrl: newAd.youtube_url,
         datePosted: newAd.date_posted,
         views: newAd.views
       }
