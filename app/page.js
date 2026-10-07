@@ -5,7 +5,7 @@ import {
   Building2, Phone, Mail, MapPin, Search, Plus, Shield, CheckCircle, 
   ChevronDown, ChevronUp, User, Lock, LogOut, ArrowRight, Eye, Trash2, 
   MessageSquare, Sparkles, SlidersHorizontal, Share2, Check, RefreshCw, X, Menu,
-  AlertTriangle, Video, BookmarkCheck
+  AlertTriangle, Video, BookmarkCheck, Map as MapIcon, ExternalLink, Compass
 } from 'lucide-react';
 
 const BrandLogo = ({ className = "h-10 w-10" }) => (
@@ -53,7 +53,6 @@ const HOME_COMMERCIAL_AREAS = [
   "BUKHARI COMMERCIAL"
 ];
 
-// CLIENT UPDATED RESIDENTIAL SIZES LIST (100 to 4000 Yards)
 const RESIDENTIAL_SIZES = [
   "100 YRD",
   "120 YRD",
@@ -69,10 +68,16 @@ const RESIDENTIAL_SIZES = [
 ];
 
 const BOOKING_CATEGORIES = [
-  "DHA PHASE 8 BOOKINGS",
-  "COMMERCIAL INSTALLMENT PLOTS",
-  "RESIDENTIAL INSTALLMENT PLOTS",
-  "UPCOMING NEW LAUNCHES"
+  "APARTMENTS",
+  "OFFICES",
+  "SHOPS"
+];
+
+const DHA_MAPS_LIST = [
+  { name: "DHA Phase 8 Master Zone", desc: "Business Zone, Zulfiqar Com, Beach Avenue, Sahil Com", link: "https://maps.google.com/?q=DHA+Phase+8+Karachi" },
+  { name: "DHA Phase 6 & Bukhari Commercial", desc: "Lane 4, Lane 11, Main Khayaban-e-Bukhari", link: "https://maps.google.com/?q=Bukhari+Commercial+Phase+6+DHA+Karachi" },
+  { name: "DHA Phase 5 & Badar Commercial", desc: "26th Street, Badar Com, Saba Avenue", link: "https://maps.google.com/?q=DHA+Phase+5+Karachi" },
+  { name: "DHA Phase 7 & Extension", desc: "Commercial Avenue, Jami Commercial Hub", link: "https://maps.google.com/?q=DHA+Phase+7+Karachi" }
 ];
 
 export default function App() {
@@ -193,6 +198,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col selection:bg-[#E5B264] selection:text-slate-950 relative">
       
+      {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed top-24 right-5 z-50 bg-[#E5B264] text-slate-950 px-6 py-3.5 rounded-2xl shadow-2xl font-black flex items-center gap-2.5 border border-[#d6a354] animate-bounce">
           <Sparkles className="w-5 h-5 text-slate-950" />
@@ -200,6 +206,7 @@ export default function App() {
         </div>
       )}
 
+      {/* Database Warning Banner */}
       {dbError && (
         <div className="bg-[#E5B264]/10 border-b border-[#E5B264]/30 text-amber-900 text-xs px-4 py-3 flex items-center justify-between">
           <div className="max-w-7xl mx-auto flex items-center gap-2 font-bold">
@@ -208,87 +215,84 @@ export default function App() {
           </div>
           <button 
             onClick={fetchAds} 
-            className="bg-[#E5B264] text-slate-950 px-3 py-1 rounded-lg font-bold hover:bg-[#d4a052] transition-colors"
+            className="bg-[#E5B264] text-slate-950 px-3 py-1 rounded-lg font-bold hover:bg-[#d4a052] transition-colors cursor-pointer"
           >
             Retry Connection
           </button>
         </div>
       )}
 
-      {/* Header / Navbar */}
-      <header className="sticky top-0 z-40 bg-[#0B1A28]/95 backdrop-blur-md text-white border-b border-[#183048] shadow-2xl">
+      {/* Professional Refined Navbar */}
+      <header className="sticky top-0 z-40 bg-[#0B1A28]/95 backdrop-blur-md text-white border-b border-[#183048]/80 shadow-2xl transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             
+            {/* Brand Logo */}
             <div 
               onClick={() => setCurrentPage('home')}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="flex items-center gap-3 cursor-pointer group select-none"
             >
-              <div className="p-1.5 rounded-2xl bg-[#060e16] border border-[#183048] group-hover:border-[#E5B264] transition-all shadow-md">
-                <BrandLogo className="h-10 w-10 transition-transform group-hover:scale-105" />
+              <div className="p-2 rounded-2xl bg-[#060e16] border border-[#183048] group-hover:border-[#E5B264]/60 transition-all shadow-md">
+                <BrandLogo className="h-8 w-8 transition-transform group-hover:scale-105" />
               </div>
               <div>
                 <span className="text-xl sm:text-2xl font-black tracking-tight text-white block leading-none">
                   DHA <span className="text-[#E5B264]">PLOTS</span>
                 </span>
-                <span className="text-[10px] text-[#E5B264] font-extrabold uppercase tracking-widest block mt-1">
+                <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest block mt-1">
                   Phase 8 Property Network
                 </span>
               </div>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
-              <button 
-                onClick={() => setCurrentPage('home')}
-                className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all ${currentPage === 'home' ? 'bg-[#E5B264] text-slate-950 shadow-lg shadow-[#E5B264]/20' : 'text-slate-300 hover:text-white hover:bg-[#13283b]'}`}
-              >
-                Home
-              </button>
-              <button 
-                onClick={() => setCurrentPage('commercial')}
-                className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all ${currentPage === 'commercial' ? 'bg-[#E5B264] text-slate-950 shadow-lg shadow-[#E5B264]/20' : 'text-slate-300 hover:text-white hover:bg-[#13283b]'}`}
-              >
-                Commercial
-              </button>
-              <button 
-                onClick={() => setCurrentPage('residential')}
-                className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all ${currentPage === 'residential' ? 'bg-[#E5B264] text-slate-950 shadow-lg shadow-[#E5B264]/20' : 'text-slate-300 hover:text-white hover:bg-[#13283b]'}`}
-              >
-                Residential
-              </button>
-              <button 
-                onClick={() => setCurrentPage('booking')}
-                className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all ${currentPage === 'booking' ? 'bg-[#E5B264] text-slate-950 shadow-lg shadow-[#E5B264]/20' : 'text-slate-300 hover:text-white hover:bg-[#13283b]'}`}
-              >
-                Booking
-              </button>
-              <button 
-                onClick={() => setCurrentPage('contact')}
-                className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all ${currentPage === 'contact' ? 'bg-[#E5B264] text-slate-950 shadow-lg shadow-[#E5B264]/20' : 'text-slate-300 hover:text-white hover:bg-[#13283b]'}`}
-              >
-                Contact
-              </button>
+            {/* Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center space-x-1.5 bg-[#060e16]/60 p-1.5 rounded-2xl border border-[#183048]/80 backdrop-blur-sm">
+              {[
+                { id: 'home', label: 'Home' },
+                { id: 'commercial', label: 'Commercial' },
+                { id: 'residential', label: 'Residential' },
+                { id: 'booking', label: 'Booking' },
+                { id: 'maps', label: 'Maps' },
+                { id: 'contact', label: 'Contact' },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentPage(item.id)}
+                  className={`px-4 py-2 rounded-xl text-xs font-black tracking-wide uppercase transition-all duration-200 cursor-pointer ${
+                    currentPage === item.id
+                      ? 'bg-[#E5B264] text-slate-950 shadow-md shadow-[#E5B264]/20'
+                      : 'text-slate-300 hover:text-white hover:bg-[#13283b]/60'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+
               {currentUser?.role === 'admin' && (
                 <button 
                   onClick={() => setCurrentPage('admin')}
-                  className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all border border-[#E5B264]/40 flex items-center gap-1.5 ${currentPage === 'admin' ? 'bg-[#E5B264] text-slate-950' : 'text-[#E5B264] bg-[#E5B264]/10 hover:bg-[#E5B264]/20'}`}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-black tracking-wide uppercase transition-all flex items-center gap-1.5 border border-[#E5B264]/40 cursor-pointer ${
+                    currentPage === 'admin' 
+                      ? 'bg-[#E5B264] text-slate-950' 
+                      : 'text-[#E5B264] bg-[#E5B264]/10 hover:bg-[#E5B264]/20'
+                  }`}
                 >
-                  <Shield className="w-4 h-4" /> Admin Panel
+                  <Shield className="w-3.5 h-3.5" /> Admin
                 </button>
               )}
             </nav>
 
-            <div className="hidden md:flex items-center space-x-3">
+            {/* User Session Profile & Controls */}
+            <div className="hidden sm:flex items-center space-x-3">
               {currentUser ? (
-                <div className="flex items-center gap-3 bg-[#060e16] px-4 py-2 rounded-2xl border border-[#183048]">
+                <div className="flex items-center gap-3 bg-[#060e16] pl-4 pr-2 py-1.5 rounded-2xl border border-[#183048]">
                   <div className="text-right">
-                    <span className="block text-xs font-bold text-white">{currentUser.name || 'Admin'}</span>
-                    <span className="block text-[10px] text-[#E5B264] font-extrabold uppercase tracking-wider">{currentUser.role}</span>
+                    <span className="block text-xs font-bold text-white leading-tight">{currentUser.name || 'Admin'}</span>
+                    <span className="block text-[9px] text-[#E5B264] font-extrabold uppercase tracking-wider">{currentUser.role}</span>
                   </div>
                   <button 
                     onClick={handleLogout}
-                    className="p-2 text-slate-400 hover:text-rose-400 transition-colors"
+                    className="p-2 text-slate-400 hover:text-rose-400 transition-colors rounded-xl hover:bg-rose-500/10 cursor-pointer"
                     title="Logout"
                   >
                     <LogOut className="w-4 h-4" />
@@ -297,42 +301,79 @@ export default function App() {
               ) : (
                 <button 
                   onClick={() => setIsAuthModalOpen(true)}
-                  className="bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black px-5 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-[#E5B264]/20 active:scale-95 flex items-center gap-2"
+                  className="bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-[#E5B264]/15 active:scale-95 flex items-center gap-2 cursor-pointer"
                 >
-                  <Lock className="w-4 h-4" /> Admin Login 
+                  <Lock className="w-3.5 h-3.5" /> Login 
                 </button>
               )}
             </div>
 
+            {/* Mobile Hamburger Button */}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-300 hover:text-[#E5B264]"
+              className="lg:hidden p-2.5 text-slate-300 hover:text-[#E5B264] rounded-xl hover:bg-[#13283b] transition-all cursor-pointer"
+              aria-label="Toggle navigation"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
+        {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-[#0B1A28] border-b border-[#183048] px-4 py-4 space-y-2">
-            <button onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Home</button>
-            <button onClick={() => { setCurrentPage('commercial'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Commercial</button>
-            <button onClick={() => { setCurrentPage('residential'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Residential</button>
-            <button onClick={() => { setCurrentPage('booking'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Booking</button>
-            <button onClick={() => { setCurrentPage('contact'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-slate-100 hover:bg-[#13283b]">Contact</button>
+          <div className="lg:hidden bg-[#0B1A28] border-b border-[#183048] px-4 py-4 space-y-1.5">
+            {[
+              { id: 'home', label: 'Home' },
+              { id: 'commercial', label: 'Commercial' },
+              { id: 'residential', label: 'Residential' },
+              { id: 'booking', label: 'Booking' },
+              { id: 'maps', label: 'Maps' },
+              { id: 'contact', label: 'Contact' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => { setCurrentPage(item.id); setMobileMenuOpen(false); }}
+                className={`w-full text-left py-2.5 px-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  currentPage === item.id 
+                    ? 'bg-[#E5B264] text-slate-950' 
+                    : 'text-slate-200 hover:bg-[#13283b]'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+
             {currentUser?.role === 'admin' && (
-              <button onClick={() => { setCurrentPage('admin'); setMobileMenuOpen(false); }} className="w-full text-left py-2.5 px-3 rounded-lg text-sm font-bold text-[#E5B264] hover:bg-[#13283b]">Admin Panel</button>
+              <button 
+                onClick={() => { setCurrentPage('admin'); setMobileMenuOpen(false); }} 
+                className="w-full text-left py-2.5 px-3.5 rounded-xl text-xs font-black uppercase tracking-wider text-[#E5B264] bg-[#E5B264]/10 border border-[#E5B264]/30 flex items-center gap-2 mt-2 cursor-pointer"
+              >
+                <Shield className="w-3.5 h-3.5" /> Admin Panel
+              </button>
             )}
-            {!currentUser ? (
-              <button onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }} className="w-full bg-[#E5B264] text-slate-950 font-extrabold py-2.5 rounded-xl text-center text-sm mt-2">Admin Login</button>
-            ) : (
-              <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="w-full bg-rose-500/20 text-rose-300 font-bold py-2.5 rounded-xl text-center text-sm mt-2">Logout</button>
-            )}
+
+            <div className="pt-2 border-t border-[#183048]/80 mt-2">
+              {!currentUser ? (
+                <button 
+                  onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }} 
+                  className="w-full bg-[#E5B264] text-slate-950 font-black py-2.5 rounded-xl text-center text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  Admin Login
+                </button>
+              ) : (
+                <button 
+                  onClick={() => { handleLogout(); setMobileMenuOpen(false); }} 
+                  className="w-full bg-rose-500/20 text-rose-300 font-black py-2.5 rounded-xl text-center text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  Logout
+                </button>
+              )}
+            </div>
           </div>
         )}
       </header>
 
-      {/* Dynamic Main Routing */}
+      {/* Main Routing Views */}
       <main className="flex-grow bg-white">
         {currentPage === 'home' && (
           <HomePage 
@@ -373,8 +414,8 @@ export default function App() {
 
         {currentPage === 'booking' && (
           <CategoryListingPage 
-            title="DHA PHASE 8 BOOKING & INSTALLMENTS"
-            subtitle="Explore direct inventory booking opportunities and upcoming verified projects."
+            title="DHA BOOKINGS & PROJECTS"
+            subtitle="Explore direct bookings for luxury apartments, premium corporate offices, and commercial shops."
             categories={BOOKING_CATEGORIES}
             ads={ads}
             expandedCategories={expandedCategories}
@@ -382,6 +423,10 @@ export default function App() {
             setSelectedPlot={setSelectedPlot}
             type="Booking"
           />
+        )}
+
+        {currentPage === 'maps' && (
+          <DhaMapsSection />
         )}
 
         {currentPage === 'contact' && (
@@ -397,6 +442,7 @@ export default function App() {
         )}
       </main>
 
+      {/* Professional Footer */}
       <footer className="bg-[#0B1A28] border-t border-[#183048] text-slate-400 text-xs py-12 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="space-y-3.5">
@@ -427,11 +473,12 @@ export default function App() {
           <div className="space-y-2">
             <h4 className="text-xs font-black text-white uppercase tracking-widest text-[#E5B264] mb-3">Quick Navigation</h4>
             <div className="flex flex-col space-y-2 font-bold">
-              <button onClick={() => setCurrentPage('home')} className="text-left hover:text-[#E5B264] transition-colors">Home Page</button>
-              <button onClick={() => setCurrentPage('commercial')} className="text-left hover:text-[#E5B264] transition-colors">Phase 8 Commercial</button>
-              <button onClick={() => setCurrentPage('residential')} className="text-left hover:text-[#E5B264] transition-colors">Residential Yard Sizes</button>
-              <button onClick={() => setCurrentPage('booking')} className="text-left hover:text-[#E5B264] transition-colors">Bookings & Installments</button>
-              <button onClick={() => setCurrentPage('contact')} className="text-left hover:text-[#E5B264] transition-colors">Direct Contact & Address</button>
+              <button onClick={() => setCurrentPage('home')} className="text-left hover:text-[#E5B264] transition-colors cursor-pointer">Home Page</button>
+              <button onClick={() => setCurrentPage('commercial')} className="text-left hover:text-[#E5B264] transition-colors cursor-pointer">Phase 8 Commercial</button>
+              <button onClick={() => setCurrentPage('residential')} className="text-left hover:text-[#E5B264] transition-colors cursor-pointer">Residential Yard Sizes</button>
+              <button onClick={() => setCurrentPage('booking')} className="text-left hover:text-[#E5B264] transition-colors cursor-pointer">Apartments, Offices & Shops</button>
+              <button onClick={() => setCurrentPage('maps')} className="text-left hover:text-[#E5B264] transition-colors cursor-pointer">DHA Karachi Maps</button>
+              <button onClick={() => setCurrentPage('contact')} className="text-left hover:text-[#E5B264] transition-colors cursor-pointer">Direct Contact & Address</button>
             </div>
           </div>
 
@@ -450,12 +497,12 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Floating WhatsApp Chat */}
+      {/* Floating Circular WhatsApp Chat Button */}
       <a 
         href={WHATSAPP_LINK}
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-6 right-6 z-50 bg-emerald-600 hover:bg-emerald-500 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 border-2 border-white/30 group"
+        className="fixed bottom-6 right-6 z-50 bg-emerald-600 hover:bg-emerald-500 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 border-2 border-white/30 group cursor-pointer"
         title="Chat on WhatsApp"
       >
         <MessageSquare className="w-7 h-7 text-white fill-white" />
@@ -464,6 +511,7 @@ export default function App() {
         </span>
       </a>
 
+      {/* Plot Details Modal */}
       {selectedPlot && (
         <PlotDetailsModal 
           plot={selectedPlot} 
@@ -471,7 +519,7 @@ export default function App() {
         />
       )}
 
-      {/* Admin Login Modal (No Signup) */}
+      {/* Admin Login Modal */}
       {isAuthModalOpen && (
         <AdminLoginModal 
           email={authEmail} 
@@ -524,32 +572,32 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
             </span>
             
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-white drop-shadow-md">
-              Exclusive <span className="text-[#E5B264]">Commercial, Residential & Booking</span> Plots
+              Exclusive <span className="text-[#E5B264]">Commercial, Residential & Booking</span> Opportunities
             </h1>
             
             <p className="text-slate-200 text-base sm:text-lg font-medium leading-relaxed drop-shadow">
-              Managed by <strong className="text-white">{OWNER_NAME} {ESTATE_NAME}</strong>. Direct inventory Commercial Plots Business Zone, Bukhari Commercial, Zulfiqar Com, Sahil Com, and Residential Yards (100 YRD to 4000 YRD).
+              Managed by <strong className="text-white">{OWNER_NAME} {ESTATE_NAME}</strong>. Direct inventory Commercial Plots Business Zone, Bukhari Commercial, Zulfiqar Com, Sahil Com, Residential Yards (100 YRD to 4000 YRD), and Apartment/Office/Shop Bookings.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 3 Quick Action Cards */}
+      {/* Quick Action Matrix */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <button 
             onClick={() => setCurrentPage('commercial')}
             className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
           >
             <div className="space-y-1.5">
               <span className="text-[11px] font-black uppercase tracking-widest text-[#E5B264]">Commercial Hub</span>
-              <h3 className="text-lg font-black text-white group-hover:text-[#E5B264] transition-colors">
+              <h3 className="text-base font-black text-white group-hover:text-[#E5B264] transition-colors">
                 Commercial Areas
               </h3>
-              <p className="text-xs text-slate-400 font-medium">Bukhari, Business Zone, Sahil & Peninsula</p>
+              <p className="text-[11px] text-slate-400 font-medium">Bukhari, Business Zone, Sahil</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
-              <ArrowRight className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
+              <ArrowRight className="w-4 h-4" />
             </div>
           </button>
 
@@ -559,13 +607,13 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
           >
             <div className="space-y-1.5">
               <span className="text-[11px] font-black uppercase tracking-widest text-[#E5B264]">Residential Hub</span>
-              <h3 className="text-lg font-black text-white group-hover:text-[#E5B264] transition-colors">
-                Yard Sizes (100 to 4000)
+              <h3 className="text-base font-black text-white group-hover:text-[#E5B264] transition-colors">
+                Yard Sizes (100–4000)
               </h3>
-              <p className="text-xs text-slate-400 font-medium">100, 120, 150, 300, 500, 800, 1000, 4000 YRD</p>
+              <p className="text-[11px] text-slate-400 font-medium">100, 120, 150, 500, 1000 YRD</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
-              <ArrowRight className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
+              <ArrowRight className="w-4 h-4" />
             </div>
           </button>
 
@@ -574,14 +622,30 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
             className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
           >
             <div className="space-y-1.5">
-              <span className="text-[11px] font-black uppercase tracking-widest text-[#E5B264]">Installment Plans</span>
-              <h3 className="text-lg font-black text-white group-hover:text-[#E5B264] transition-colors">
-                Bookings & Projects
+              <span className="text-[11px] font-black uppercase tracking-widest text-[#E5B264]">Booking Projects</span>
+              <h3 className="text-base font-black text-white group-hover:text-[#E5B264] transition-colors">
+                Apartment, Office, Shop
               </h3>
-              <p className="text-xs text-slate-400 font-medium">New Launches & Easy Installments</p>
+              <p className="text-[11px] text-slate-400 font-medium">Verified Direct Bookings</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
-              <BookmarkCheck className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
+              <BookmarkCheck className="w-4 h-4" />
+            </div>
+          </button>
+
+          <button 
+            onClick={() => setCurrentPage('maps')}
+            className="group bg-[#0B1A28] hover:bg-[#0e2235] border border-[#183048] hover:border-[#E5B264]/50 p-6 rounded-3xl text-left transition-all duration-300 shadow-xl flex items-center justify-between cursor-pointer"
+          >
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-black uppercase tracking-widest text-[#E5B264]">Navigation</span>
+              <h3 className="text-base font-black text-white group-hover:text-[#E5B264] transition-colors">
+                Master Maps
+              </h3>
+              <p className="text-[11px] text-slate-400 font-medium">Phase 8 Satellite & Directions</p>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
+              <MapIcon className="w-4 h-4" />
             </div>
           </button>
         </div>
@@ -600,7 +664,7 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
             >
               <button 
                 onClick={() => toggleHomeCategory(catName)}
-                className="w-full px-5 py-4 sm:py-5 flex items-center justify-between text-left focus:outline-none transition-colors"
+                className="w-full px-5 py-4 sm:py-5 flex items-center justify-between text-left focus:outline-none transition-colors cursor-pointer"
               >
                 <div className="flex items-center space-x-4 sm:space-x-6">
                   <div className="bg-[#0B1A28] text-[#E5B264] font-black text-xs px-3.5 py-2 rounded-xl shadow-sm tracking-wider whitespace-nowrap">
@@ -666,7 +730,7 @@ function CategoryListingPage({ title, subtitle, categories, ads, expandedCategor
             >
               <button 
                 onClick={() => toggleCategory(catName)}
-                className="w-full px-5 py-4 sm:py-5 flex items-center justify-between text-left focus:outline-none transition-colors"
+                className="w-full px-5 py-4 sm:py-5 flex items-center justify-between text-left focus:outline-none transition-colors cursor-pointer"
               >
                 <div className="flex items-center space-x-4 sm:space-x-6">
                   <div className="bg-[#0B1A28] text-[#E5B264] font-black text-xs px-3.5 py-2 rounded-xl shadow-sm tracking-wider whitespace-nowrap">
@@ -704,6 +768,77 @@ function CategoryListingPage({ title, subtitle, categories, ads, expandedCategor
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+function DhaMapsSection() {
+  return (
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 bg-white">
+      <div className="text-center max-w-2xl mx-auto space-y-2">
+        <span className="px-3.5 py-1 rounded-full text-xs font-black uppercase bg-[#E5B264]/10 text-slate-900 border border-[#E5B264]/30">
+          Interactive Map & Navigation
+        </span>
+        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight uppercase">DHA Karachi Master Maps</h1>
+        <p className="text-slate-500 text-sm font-medium">Explore live satellite locations, major zones, and phase layout boundaries.</p>
+      </div>
+
+      <div className="bg-[#0B1A28] p-5 sm:p-7 rounded-3xl border border-[#183048] shadow-2xl">
+        <div className="flex items-center justify-between pb-4 border-b border-[#183048] text-white mb-4">
+          <div className="flex items-center gap-2">
+            <Compass className="w-5 h-5 text-[#E5B264]" />
+            <h2 className="text-sm sm:text-base font-black">Live Satellite View (DHA Phase 8)</h2>
+          </div>
+          <a
+            href="https://maps.google.com/?q=DHA+Phase+8+Karachi"
+            target="_blank"
+            rel="noreferrer"
+            className="text-xs font-bold text-[#E5B264] hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            Open in Google Maps <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+
+        <div className="w-full h-[420px] sm:h-[520px] rounded-2xl overflow-hidden border border-[#183048]">
+          <iframe
+            title="DHA Phase 8 Map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28972.164390623696!2d67.05445258941097!3d24.789139268393527!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33ced94ceee0f%3A0x6e952aa1da3c0c1b!2sPhase%208%20D.H.A.%2C%20Karachi!5e0!3m2!1sen!2s!4v1710000000000!5m2!1sen!2s"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-2">
+          <MapPin className="w-5 h-5 text-[#c8984e]" /> Quick Phase Directions
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {DHA_MAPS_LIST.map((item, idx) => (
+            <a
+              key={idx}
+              href={item.link}
+              target="_blank"
+              rel="noreferrer"
+              className="p-5 rounded-2xl bg-[#E8F1F9] hover:bg-[#dbe7f3] border border-slate-300 transition-all flex items-start justify-between group cursor-pointer"
+            >
+              <div>
+                <h4 className="font-black text-slate-900 text-sm group-hover:text-[#b08034] transition-colors flex items-center gap-1.5">
+                  <Compass className="w-4 h-4 text-[#c8984e]" /> {item.name}
+                </h4>
+                <p className="text-xs text-slate-600 font-semibold mt-1">
+                  {item.desc}
+                </p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#c8984e] transition-colors flex-shrink-0 mt-1" />
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -795,7 +930,7 @@ function AdRowItem({ ad, index, onClick }) {
             target="_blank" 
             rel="noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-1.5 text-xs text-emerald-700 font-bold hover:underline"
+            className="flex items-center gap-1.5 text-xs text-emerald-700 font-bold hover:underline cursor-pointer"
           >
             <MessageSquare className="w-3.5 h-3.5 text-emerald-600 fill-emerald-100" />
             {PHONE_NUMBER}
@@ -855,7 +990,7 @@ function ContactPage({ showToast }) {
               </div>
               <div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase block">Phone / Call Line</span>
-                <a href={`tel:${PHONE_NUMBER}`} className="text-base font-black text-white hover:text-[#E5B264] transition-colors">
+                <a href={`tel:${PHONE_NUMBER}`} className="text-base font-black text-white hover:text-[#E5B264] transition-colors cursor-pointer">
                   {PHONE_NUMBER}
                 </a>
               </div>
@@ -867,7 +1002,7 @@ function ContactPage({ showToast }) {
               </div>
               <div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase block">WhatsApp Direct</span>
-                <a href={WHATSAPP_LINK} target="_blank" rel="noreferrer" className="text-base font-extrabold text-emerald-400 hover:underline">
+                <a href={WHATSAPP_LINK} target="_blank" rel="noreferrer" className="text-base font-extrabold text-emerald-400 hover:underline cursor-pointer">
                   Chat on WhatsApp ({PHONE_NUMBER})
                 </a>
               </div>
@@ -930,7 +1065,7 @@ function ContactPage({ showToast }) {
             <button 
               type="submit" 
               disabled={isSending}
-              className="w-full bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black py-3.5 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 text-sm"
+              className="w-full bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black py-3.5 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 text-sm cursor-pointer"
             >
               {isSending ? <RefreshCw className="w-4 h-4 animate-spin" /> : 'Send Message Now'}
             </button>
@@ -1045,7 +1180,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
 
       <div className="bg-[#0B1A28] border border-[#183048] rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl text-white">
         <h3 className="text-xl font-black text-white flex items-center gap-2">
-          <Plus className="w-5 h-5 text-[#E5B264]" /> Create New Plot / Booking Advertisement
+          <Plus className="w-5 h-5 text-[#E5B264]" /> Create New Listing / Booking
         </h3>
 
         <form onSubmit={handlePostAd} className="space-y-6">
@@ -1055,20 +1190,20 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
               <select 
                 value={adForm.type}
                 onChange={(e) => handleTypeChange(e.target.value)}
-                className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-bold"
+                className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-bold cursor-pointer"
               >
                 <option value="Commercial">Commercial</option>
                 <option value="Residential">Residential</option>
-                <option value="Booking">Booking & Installments</option>
+                <option value="Booking">Booking (Apartment/Office/Shop)</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-300 uppercase mb-2">2. Target Category / Area</label>
+              <label className="block text-xs font-black text-slate-300 uppercase mb-2">2. Category / Area</label>
               <select 
                 value={adForm.category}
                 onChange={(e) => setAdForm({ ...adForm, category: e.target.value })}
-                className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-[#E5B264] outline-none focus:ring-2 focus:ring-[#E5B264] font-black"
+                className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-[#E5B264] outline-none focus:ring-2 focus:ring-[#E5B264] font-black cursor-pointer"
               >
                 {adForm.type === 'Commercial' && COMMERCIAL_AREAS.map(area => <option key={area} value={area}>{area}</option>)}
                 {adForm.type === 'Residential' && RESIDENTIAL_SIZES.map(sz => <option key={sz} value={sz}>{sz}</option>)}
@@ -1077,11 +1212,11 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-300 uppercase mb-2">3. Plot Size Label</label>
+              <label className="block text-xs font-black text-slate-300 uppercase mb-2">3. Size / Covered Area</label>
               <input 
                 type="text" 
                 required
-                placeholder="e.g. 120 YRD or 500 sq.yd"
+                placeholder="e.g. 1200 Sq.Ft or 120 YRD"
                 value={adForm.size}
                 onChange={(e) => setAdForm({ ...adForm, size: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-semibold"
@@ -1091,11 +1226,11 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-black text-slate-300 uppercase mb-2">Plot / Booking Title</label>
+              <label className="block text-xs font-black text-slate-300 uppercase mb-2">Title</label>
               <input 
                 type="text" 
                 required
-                placeholder="e.g. West open Corner Plot"
+                placeholder="e.g. 3 Bed Luxury Apartment Booking"
                 value={adForm.title}
                 onChange={(e) => setAdForm({ ...adForm, title: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1103,11 +1238,11 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-300 uppercase mb-2">Street / Location Subtitle</label>
+              <label className="block text-xs font-black text-slate-300 uppercase mb-2">Floor / Street / Location</label>
               <input 
                 type="text" 
                 required
-                placeholder="Street / Location / Lane"
+                placeholder="Floor No / Lane / Street"
                 value={adForm.plotNo}
                 onChange={(e) => setAdForm({ ...adForm, plotNo: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1115,11 +1250,11 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-300 uppercase mb-2">Demand Price (Crore PKR)</label>
+              <label className="block text-xs font-black text-slate-300 uppercase mb-2">Price / Demand (Crore PKR)</label>
               <input 
                 type="text" 
                 required
-                placeholder="Price in Crore (e.g. 3.5)"
+                placeholder="Price in Crore (e.g. 2.25)"
                 value={adForm.priceCrore}
                 onChange={(e) => setAdForm({ ...adForm, priceCrore: e.target.value })}
                 className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-[#E5B264] outline-none focus:ring-2 focus:ring-[#E5B264] font-bold"
@@ -1142,7 +1277,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
           </div>
 
           <div>
-            <label className="block text-xs font-black text-slate-300 uppercase mb-2">Plot Features</label>
+            <label className="block text-xs font-black text-slate-300 uppercase mb-2">Features</label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <label className="flex items-center space-x-2 bg-[#060e16] border border-[#183048] p-3 rounded-xl cursor-pointer text-xs font-bold text-slate-300">
                 <input 
@@ -1190,7 +1325,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
             <label className="block text-xs font-black text-slate-300 uppercase mb-2">Description</label>
             <textarea 
               rows="3" 
-              placeholder="Specs, location features, payment details..." 
+              placeholder="Specs, down payment, installment schedule..." 
               value={adForm.description}
               onChange={(e) => setAdForm({ ...adForm, description: e.target.value })}
               className="w-full bg-[#060e16] border border-[#183048] rounded-xl px-3.5 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-[#E5B264] font-medium"
@@ -1218,7 +1353,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
                 <th className="py-3.5 px-4">Type</th>
                 <th className="py-3.5 px-4">Category</th>
                 <th className="py-3.5 px-4">Video</th>
-                <th className="py-3.5 px-4">Street</th>
+                <th className="py-3.5 px-4">Street / Location</th>
                 <th className="py-3.5 px-4">Price</th>
                 <th className="py-3.5 px-4 text-right">Action</th>
               </tr>
@@ -1231,7 +1366,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
                   <td className="py-3.5 px-4 text-[#E5B264] font-black">{ad.category}</td>
                   <td className="py-3.5 px-4">
                     {ad.youtubeUrl ? (
-                      <a href={ad.youtubeUrl} target="_blank" rel="noreferrer" className="text-red-400 hover:text-red-300 font-bold flex items-center gap-1">
+                      <a href={ad.youtubeUrl} target="_blank" rel="noreferrer" className="text-red-400 hover:text-red-300 font-bold flex items-center gap-1 cursor-pointer">
                         <Video className="w-3.5 h-3.5" /> Watch
                       </a>
                     ) : (
@@ -1243,7 +1378,7 @@ function AdminPanelPage({ ads, fetchAds, showToast }) {
                   <td className="py-3.5 px-4 text-right">
                     <button 
                       onClick={() => handleDeleteAd(ad.id)}
-                      className="text-rose-400 hover:text-rose-300 p-2 rounded-lg hover:bg-rose-500/10 transition-colors"
+                      className="text-rose-400 hover:text-rose-300 p-2 rounded-lg hover:bg-rose-500/10 transition-colors cursor-pointer"
                       title="Delete Ad"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -1273,7 +1408,7 @@ function PlotDetailsModal({ plot, onClose }) {
       <div className="bg-[#0B1A28] border border-[#183048] text-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
         <button 
           onClick={onClose}
-          className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-xl bg-[#060e16]"
+          className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-xl bg-[#060e16] cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -1290,13 +1425,12 @@ function PlotDetailsModal({ plot, onClose }) {
             <span className="text-xl font-black text-[#E5B264]">{formatPkr(plot.priceCrore)}</span>
           </div>
 
-          {/* YouTube Video Button in Modal */}
           {plot.youtubeUrl && (
             <a 
               href={plot.youtubeUrl} 
               target="_blank" 
               rel="noreferrer" 
-              className="bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-white font-black p-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm transition-all"
+              className="bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-white font-black p-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm transition-all cursor-pointer"
             >
               <Video className="w-5 h-5 text-red-400" /> Watch YouTube Video Tour
             </a>
@@ -1323,7 +1457,7 @@ function PlotDetailsModal({ plot, onClose }) {
 
           <div className="space-y-1">
             <h4 className="text-xs font-bold uppercase text-slate-400">Property Details</h4>
-            <p className="text-xs text-slate-300 leading-relaxed font-medium">{plot.description || "Direct verified plot listing with complete clear title and documentation."}</p>
+            <p className="text-xs text-slate-300 leading-relaxed font-medium">{plot.description || "Direct verified property with complete clear documentation."}</p>
           </div>
 
           <div className="pt-4 flex flex-col sm:flex-row gap-3">
@@ -1331,13 +1465,13 @@ function PlotDetailsModal({ plot, onClose }) {
               href={WHATSAPP_LINK} 
               target="_blank" 
               rel="noreferrer" 
-              className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-md"
+              className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-md cursor-pointer"
             >
               <MessageSquare className="w-4 h-4" /> WhatsApp Direct
             </a>
             <a 
               href={`tel:${PHONE_NUMBER}`} 
-              className="flex-1 bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-md"
+              className="flex-1 bg-[#E5B264] hover:bg-[#d8a353] text-slate-950 font-black py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-md cursor-pointer"
             >
               <Phone className="w-4 h-4" /> Call {OWNER_NAME}
             </a>
@@ -1352,7 +1486,7 @@ function AdminLoginModal({ email, setEmail, password, setPassword, onSubmit, isL
   return (
     <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
       <div className="bg-[#0B1A28] border border-[#183048] text-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
-        <button onClick={onClose} className="absolute top-5 right-5 text-slate-400 hover:text-white">
+        <button onClick={onClose} className="absolute top-5 right-5 text-slate-400 hover:text-white cursor-pointer">
           <X className="w-5 h-5" />
         </button>
 
