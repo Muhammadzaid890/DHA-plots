@@ -5,7 +5,7 @@ import {
   Building2, Phone, Mail, MapPin, Search, Plus, Shield, CheckCircle, 
   ChevronDown, ChevronUp, User, Lock, LogOut, ArrowRight, Eye, Trash2, 
   MessageSquare, Sparkles, SlidersHorizontal, Share2, Check, RefreshCw, X, Menu,
-  AlertTriangle, Video, BookmarkCheck, Map as MapIcon, ExternalLink, Compass
+  AlertTriangle, Video, BookmarkCheck, Map as MapIcon, ExternalLink, Compass, Maximize2, Download
 } from 'lucide-react';
 
 const BrandLogo = ({ className = "h-10 w-10" }) => (
@@ -31,7 +31,7 @@ const SOCIAL_LINKS = {
   facebook: "https://www.facebook.com/share/1GP9xkMgXW/",
   instagram: "#",
   tiktok: "#",
-  youtube: "#"
+  youtube: "https://www.youtube.com/@dha_plots"
 };
 
 const COMMERCIAL_AREAS = [
@@ -73,11 +73,38 @@ const BOOKING_CATEGORIES = [
   "SHOPS"
 ];
 
-const DHA_MAPS_LIST = [
-  { name: "DHA Phase 8 Master Zone", desc: "Business Zone, Zulfiqar Com, Beach Avenue, Sahil Com", link: "https://maps.google.com/?q=DHA+Phase+8+Karachi" },
-  { name: "DHA Phase 6 & Bukhari Commercial", desc: "Lane 4, Lane 11, Main Khayaban-e-Bukhari", link: "https://maps.google.com/?q=Bukhari+Commercial+Phase+6+DHA+Karachi" },
-  { name: "DHA Phase 5 & Badar Commercial", desc: "26th Street, Badar Com, Saba Avenue", link: "https://maps.google.com/?q=DHA+Phase+5+Karachi" },
-  { name: "DHA Phase 7 & Extension", desc: "Commercial Avenue, Jami Commercial Hub", link: "https://maps.google.com/?q=DHA+Phase+7+Karachi" }
+// 5 Master Maps Images Configuration
+const DHA_MAP_IMAGES = [
+  {
+    id: 1,
+    title: "Image 1: DHA Phase 8 Master Town Map",
+    subtitle: "Complete Phase 8 Master Plan, Avenues, Zones & Coastal Belt",
+    src: "/maps/image1.jpg"
+  },
+  {
+    id: 2,
+    title: "Image 2: Zulfiqar Commercial Phase 8",
+    subtitle: "80' Wide Zulfiqar Ave & Commercial Streets 1 to 10",
+    src: "/maps/image2.jpg"
+  },
+  {
+    id: 3,
+    title: "Image 3: Peninsula, Tipu Sultan, Iqbal & Faisal Com",
+    subtitle: "100' Saba Avenue, Commercial Lanes & Parking Plots",
+    src: "/maps/image3.jpg"
+  },
+  {
+    id: 4,
+    title: "Image 4: Al Murtaza Commercial Phase 8",
+    subtitle: "60' Khayaban-e-Shaheen, Al-Murtaza Lanes & Streets",
+    src: "/maps/image4.jpg"
+  },
+  {
+    id: 5,
+    title: "Image 5: Business Zone Phase 8",
+    subtitle: "Business Avenue, Creek Marina & Club House Zone",
+    src: "/maps/image5.jpg"
+  }
 ];
 
 export default function App() {
@@ -457,14 +484,20 @@ export default function App() {
               Project by Earth Develope&apos;s
             </p>
 
+            {/* Social Media Links with YouTube */}
             <div className="pt-2 flex items-center space-x-3">
-              <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all">
+              <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noreferrer" title="Facebook" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
               </a>
-              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all">
+              <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noreferrer" title="YouTube Channel" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-red-500 hover:border-red-500 transition-all">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </a>
+              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noreferrer" title="Instagram" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
               </a>
-              <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all">
+              <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noreferrer" title="TikTok" className="w-9 h-9 rounded-xl bg-[#060e16] border border-[#183048] flex items-center justify-center text-slate-300 hover:text-[#E5B264] hover:border-[#E5B264] transition-all">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-2.901 2.887 2.89 2.89 0 0 1-2.887-2.887 2.89 2.89 0 0 1 2.887-2.887c.307 0 .602.053.88.146V9.45a6.31 6.31 0 0 0-.88-.063C6.182 9.387 3.5 12.07 3.5 15.378c0 3.308 2.682 5.99 5.99 5.99 3.308 0 5.99-2.682 5.99-5.99V8.6a8.212 8.212 0 0 0 4.109 1.531V6.686z"/></svg>
               </a>
             </div>
@@ -493,7 +526,7 @@ export default function App() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-[#183048] text-center text-slate-500 text-[11px] font-semibold">
-          &copy; {new Date().getFullYear()} DHA Plots Real Estate Network. All Rights Reserved. | <span className="text-[#E5B264] font-bold">Project by Earth Develope&apos;s</span>
+          &copy; 2026 DHA Plots Real Estate Network. All Rights Reserved. | <span className="text-[#E5B264] font-bold">Project by Earth Develope&apos;s</span>
         </div>
       </footer>
 
@@ -642,7 +675,7 @@ function HomePage({ ads, setCurrentPage, setSelectedPlot, searchQuery, setSearch
               <h3 className="text-base font-black text-white group-hover:text-[#E5B264] transition-colors">
                 Master Maps
               </h3>
-              <p className="text-[11px] text-slate-400 font-medium">Phase 8 Satellite & Directions</p>
+              <p className="text-[11px] text-slate-400 font-medium">5 Official Master Maps & Live GPS</p>
             </div>
             <div className="w-9 h-9 rounded-xl bg-[#E5B264]/10 group-hover:bg-[#E5B264] group-hover:text-slate-950 text-[#E5B264] flex items-center justify-center transition-all flex-shrink-0 ml-2">
               <MapIcon className="w-4 h-4" />
@@ -774,21 +807,104 @@ function CategoryListingPage({ title, subtitle, categories, ads, expandedCategor
 }
 
 function DhaMapsSection() {
+  const [activeImageModal, setActiveImageModal] = useState(null);
+
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 bg-white">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12 bg-white">
       <div className="text-center max-w-2xl mx-auto space-y-2">
         <span className="px-3.5 py-1 rounded-full text-xs font-black uppercase bg-[#E5B264]/10 text-slate-900 border border-[#E5B264]/30">
-          Interactive Map & Navigation
+          Official DHA Phase 8 Maps
         </span>
-        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight uppercase">DHA Karachi Master Maps</h1>
-        <p className="text-slate-500 text-sm font-medium">Explore live satellite locations, major zones, and phase layout boundaries.</p>
+        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight uppercase">
+          DHA Karachi Phase 8 Master Maps
+        </h1>
+        <p className="text-slate-500 text-sm font-medium">
+          High-definition authentic master maps of Phase 8, commercial zones, and live GPS map below.
+        </p>
       </div>
 
-      <div className="bg-[#0B1A28] p-5 sm:p-7 rounded-3xl border border-[#183048] shadow-2xl">
-        <div className="flex items-center justify-between pb-4 border-b border-[#183048] text-white mb-4">
+      {/* 5 High Resolution Maps Image Showcase Grid */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
+          <MapIcon className="w-5 h-5 text-[#c8984e]" />
+          <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight">
+            Official Master Layout Plans (5 Maps)
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {DHA_MAP_IMAGES.map((mapItem, idx) => (
+            <div 
+              key={mapItem.id} 
+              className={`bg-[#0B1A28] border border-[#183048] rounded-3xl overflow-hidden shadow-xl hover:border-[#E5B264]/50 transition-all flex flex-col group ${
+                idx === 0 ? 'md:col-span-2' : ''
+              }`}
+            >
+              {/* Image Container with zoom preview action */}
+              <div 
+                onClick={() => setActiveImageModal(mapItem)}
+                className="relative bg-slate-950 overflow-hidden cursor-pointer h-64 sm:h-80 w-full flex items-center justify-center group-hover:opacity-95"
+              >
+                <img 
+                  src={mapItem.src} 
+                  alt={mapItem.title} 
+                  className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    // Fallback visual if images are placed in different location
+                    e.target.onerror = null;
+                    e.target.src = "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80";
+                  }}
+                />
+                <div className="absolute inset-0 bg-[#0B1A28]/20 group-hover:bg-[#0B1A28]/40 transition-colors flex items-center justify-center">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-[#E5B264] text-slate-950 font-black px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-2xl">
+                    <Maximize2 className="w-4 h-4" /> Click to Zoom Fullscreen
+                  </span>
+                </div>
+                <span className="absolute top-3 left-3 bg-[#060e16]/90 backdrop-blur-md text-[#E5B264] text-[10px] font-black uppercase px-3 py-1 rounded-lg border border-[#183048]">
+                  Image {mapItem.id}
+                </span>
+              </div>
+
+              {/* Card Footer Details */}
+              <div className="p-5 flex items-center justify-between gap-4 border-t border-[#183048] bg-[#081420]">
+                <div>
+                  <h3 className="text-white font-black text-sm sm:text-base group-hover:text-[#E5B264] transition-colors">
+                    {mapItem.title}
+                  </h3>
+                  <p className="text-xs text-slate-400 font-medium mt-0.5">
+                    {mapItem.subtitle}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <a 
+                    href={mapItem.src} 
+                    download={`DHA_Phase_8_Map_${mapItem.id}.jpg`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="p-2.5 rounded-xl bg-[#060e16] hover:bg-[#E5B264] text-slate-300 hover:text-slate-950 transition-colors border border-[#183048]"
+                    title="Download Map"
+                  >
+                    <Download className="w-4 h-4" />
+                  </a>
+                  <button 
+                    onClick={() => setActiveImageModal(mapItem)}
+                    className="px-3.5 py-2 rounded-xl bg-[#E5B264]/10 hover:bg-[#E5B264] text-[#E5B264] hover:text-slate-950 font-black text-xs transition-colors border border-[#E5B264]/40 flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Eye className="w-3.5 h-3.5" /> View
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Google Live Satellite Map Section (Now Placed Below Images) */}
+      <div className="bg-[#0B1A28] p-5 sm:p-7 rounded-3xl border border-[#183048] shadow-2xl space-y-4">
+        <div className="flex items-center justify-between pb-4 border-b border-[#183048] text-white">
           <div className="flex items-center gap-2">
             <Compass className="w-5 h-5 text-[#E5B264]" />
-            <h2 className="text-sm sm:text-base font-black">Live Satellite View (DHA Phase 8)</h2>
+            <h2 className="text-sm sm:text-base font-black">Live Satellite GPS View (DHA Phase 8)</h2>
           </div>
           <a
             href="https://maps.google.com/?q=DHA+Phase+8+Karachi"
@@ -800,7 +916,7 @@ function DhaMapsSection() {
           </a>
         </div>
 
-        <div className="w-full h-[420px] sm:h-[520px] rounded-2xl overflow-hidden border border-[#183048]">
+        <div className="w-full h-[400px] sm:h-[480px] rounded-2xl overflow-hidden border border-[#183048]">
           <iframe
             title="DHA Phase 8 Map"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28972.164390623696!2d67.05445258941097!3d24.789139268393527!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33ced94ceee0f%3A0x6e952aa1da3c0c1b!2sPhase%208%20D.H.A.%2C%20Karachi!5e0!3m2!1sen!2s!4v1710000000000!5m2!1sen!2s"
@@ -814,32 +930,41 @@ function DhaMapsSection() {
         </div>
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-2">
-          <MapPin className="w-5 h-5 text-[#c8984e]" /> Quick Phase Directions
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {DHA_MAPS_LIST.map((item, idx) => (
-            <a
-              key={idx}
-              href={item.link}
-              target="_blank"
-              rel="noreferrer"
-              className="p-5 rounded-2xl bg-[#E8F1F9] hover:bg-[#dbe7f3] border border-slate-300 transition-all flex items-start justify-between group cursor-pointer"
-            >
-              <div>
-                <h4 className="font-black text-slate-900 text-sm group-hover:text-[#b08034] transition-colors flex items-center gap-1.5">
-                  <Compass className="w-4 h-4 text-[#c8984e]" /> {item.name}
-                </h4>
-                <p className="text-xs text-slate-600 font-semibold mt-1">
-                  {item.desc}
-                </p>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#c8984e] transition-colors flex-shrink-0 mt-1" />
-            </a>
-          ))}
+      {/* Fullscreen High-Resolution Map Preview Modal */}
+      {activeImageModal && (
+        <div className="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 flex flex-col p-4 sm:p-6 animate-in fade-in duration-200">
+          <div className="flex items-center justify-between text-white pb-3 border-b border-slate-800">
+            <div>
+              <h3 className="font-black text-base sm:text-lg text-[#E5B264]">{activeImageModal.title}</h3>
+              <p className="text-xs text-slate-400">{activeImageModal.subtitle}</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <a 
+                href={activeImageModal.src} 
+                download
+                target="_blank"
+                rel="noreferrer"
+                className="bg-[#E5B264] text-slate-950 px-3.5 py-1.5 rounded-xl font-black text-xs flex items-center gap-1.5"
+              >
+                <Download className="w-3.5 h-3.5" /> Save Image
+              </a>
+              <button 
+                onClick={() => setActiveImageModal(null)}
+                className="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 w-full overflow-auto flex items-center justify-center p-2">
+            <img 
+              src={activeImageModal.src} 
+              alt={activeImageModal.title} 
+              className="max-h-[85vh] max-w-full object-contain rounded-xl shadow-2xl"
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -928,8 +1053,8 @@ function AdRowItem({ ad, index, onClick }) {
           <a 
             href={WHATSAPP_LINK} 
             target="_blank" 
-            rel="noreferrer"
-            onClick={(e) => e.stopPropagation()}
+            rel="noreferrer" 
+            onClick={(e) => e.stopPropagation()} 
             className="flex items-center gap-1.5 text-xs text-emerald-700 font-bold hover:underline cursor-pointer"
           >
             <MessageSquare className="w-3.5 h-3.5 text-emerald-600 fill-emerald-100" />
@@ -1407,7 +1532,7 @@ function PlotDetailsModal({ plot, onClose }) {
     <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
       <div className="bg-[#0B1A28] border border-[#183048] text-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
         <button 
-          onClick={onClose}
+          onClick={onClose} 
           className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-xl bg-[#060e16] cursor-pointer"
         >
           <X className="w-5 h-5" />
